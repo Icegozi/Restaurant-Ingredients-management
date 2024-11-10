@@ -19,5 +19,11 @@ dependencyResolutionManagement {
     }
 }
 
+<<<<<<< HEAD
 rootProject.name = "Restaurant-Ingredients-management"
 include(":app")
+=======
+rootProject.name = "baitaplon"
+include(":app")
+ 
+>>>>>>> origin/branch-name

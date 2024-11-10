@@ -3,11 +3,19 @@ plugins {
 }
 
 android {
+<<<<<<< HEAD
     namespace = "com.example.restaurant_ingredients_management"
     compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.restaurant_ingredients_management"
+=======
+    namespace = "com.example.baitaplon"
+    compileSdk = 34
+
+    defaultConfig {
+        applicationId = "com.example.baitaplon"
+>>>>>>> origin/branch-name
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -26,8 +34,13 @@ android {
         }
     }
     compileOptions {
+<<<<<<< HEAD
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+=======
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+>>>>>>> origin/branch-name
     }
 }
 

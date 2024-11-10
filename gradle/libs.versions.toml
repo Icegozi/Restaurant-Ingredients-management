@@ -1,12 +1,20 @@
 [versions]
+<<<<<<< HEAD
 agp = "8.6.0"
+=======
+agp = "8.7.1"
+>>>>>>> origin/branch-name
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
 material = "1.12.0"
 activity = "1.9.3"
+<<<<<<< HEAD
 constraintlayout = "2.2.0"
+=======
+constraintlayout = "2.1.4"
+>>>>>>> origin/branch-name
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
