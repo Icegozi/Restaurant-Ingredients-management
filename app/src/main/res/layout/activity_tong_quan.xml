@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
+    tools:context=".View.TongQuan">
+
+
+    <ListView
+        android:id="@+id/lvTongQuan"
+        android:layout_width="match_parent"
+        android:layout_height="390sp"
+        android:layout_marginHorizontal="10sp"
+        android:layout_marginTop="20sp"
+        android:background="#EFE7E7" />
+
+    <ImageButton
+        android:id="@+id/imgSuaTongQuan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="30sp"
+        android:layout_marginLeft="190sp"
+        android:background="#F5F5F5"
+        app:srcCompat="@drawable/update_icon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10sp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/ptGiaCa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:inputType="text"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvGiaCa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="monospace"
+            android:text="Giá cả"
+            android:textAlignment="center"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10sp"
+        android:layout_marginVertical="10sp"
+        android:fontFamily="monospace"
+        android:text="Ngày cung cấp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="10sp">
+
+        <EditText
+            android:id="@+id/ptDate"
+            android:layout_width="280sp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="monospace"
+            android:inputType="date" />
+
+        <ImageButton
+            android:id="@+id/imgDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16sp"
+            android:layout_weight="1"
+            android:background="#F5F5F5"
+            app:srcCompat="@drawable/date_picker" />
+
+    </LinearLayout>
+
+</LinearLayout>
