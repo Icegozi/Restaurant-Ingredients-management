@@ -136,7 +136,7 @@
                 android:layout_weight="0.4"
                 android:background="#F5F5F5"
                 app:srcCompat="@drawable/plus"
-                tools:srcCompat="@drawable/Plus" />
+                tools:srcCompat="@drawable/plus" />
         </LinearLayout>
 
         <ListView
