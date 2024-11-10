@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 <<<<<<< HEAD
+<<<<<<< HEAD
     tools:context=".View.GiaoDich">
 
 =======
@@ -16,6 +17,15 @@
     android:paddingRight="5dp"
     tools:context=".giao_dich">
 
+=======
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:paddingLeft="10dp"
+    android:paddingTop="10dp"
+    android:paddingRight="5dp"
+    tools:context=".giao_dich">
+
+>>>>>>> ac930270ee9a6d9fdb20ee8633f56f802dc14990
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -223,5 +233,8 @@
         </ViewSwitcher>
 
     </LinearLayout>
+<<<<<<< HEAD
 >>>>>>> origin/branch-name
+=======
+>>>>>>> ac930270ee9a6d9fdb20ee8633f56f802dc14990
 </androidx.constraintlayout.widget.ConstraintLayout>
