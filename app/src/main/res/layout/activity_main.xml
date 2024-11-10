@@ -17,11 +17,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+    <Button
+        android:id="@+id/btn_chuyen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="139dp"
-        tools:layout_editor_absoluteY="118dp" />
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:text="Giao dịch"
+        app:layout_constraintStart_toEndOf="@+id/btn_ncc"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_ncc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_weight="1"
+        android:text="Nha cung cap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

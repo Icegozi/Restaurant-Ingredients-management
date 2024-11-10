@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RestaurantIngredientsmanagement"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@drawable/baseline_add_24" />
+
         <activity
             android:name=".View.NhaCungCap"
             android:exported="false" />

@@ -2,6 +2,7 @@ package com.example.restaurant_ingredients_management.View;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -56,5 +57,11 @@ public class TongQuan extends AppCompatActivity {
         );
 
         datePickerDialog.show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 }
