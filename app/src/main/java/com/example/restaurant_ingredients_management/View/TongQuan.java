@@ -59,9 +59,5 @@ public class TongQuan extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
+
 }

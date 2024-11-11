@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="168dp"
         android:layout_marginTop="340dp"
-        android:text="Button"
+        android:text="Tông quan"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,8 +21,8 @@
         android:id="@+id/btn_chuyen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="424dp"
         android:layout_weight="1"
         android:text="Giao dịch"
         app:layout_constraintStart_toEndOf="@+id/btn_ncc"
@@ -33,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="424dp"
         android:layout_weight="1"
         android:text="Nha cung cap"
         app:layout_constraintStart_toStartOf="parent"
