@@ -8,13 +8,10 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.restaurant_ingredients_management.View.GiaoDich;
+import com.example.restaurant_ingredients_management.View.NguyenLieu;
 import com.example.restaurant_ingredients_management.View.NhaCungCap;
-import com.example.restaurant_ingredients_management.View.TongQuan;
 
 public class MainActivity extends AppCompatActivity {
     private Button btn,btn_chuyen, btn_ncc;
@@ -30,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
 //            return insets;
 //        });
          btn = findViewById(R.id.test);
-         btn.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 Intent next = new Intent(MainActivity.this, TongQuan.class);
-                    startActivity(next);
-             }
-         });
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, NguyenLieu.class);
+                startActivity(intent);
+            }
+        });
 
         btn_chuyen = findViewById(R.id.btn_chuyen);
         btn_ncc = findViewById(R.id.btn_ncc);
