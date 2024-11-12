@@ -79,6 +79,10 @@ public class GiaoDich extends AppCompatActivity {
             Intent intent = new Intent(GiaoDich.this, MainActivity.class);
             startActivity(intent);
         }
+        if (id==R.id.opHinhAnh){
+            Intent intent = new Intent(GiaoDich.this, HinhAnh.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 }

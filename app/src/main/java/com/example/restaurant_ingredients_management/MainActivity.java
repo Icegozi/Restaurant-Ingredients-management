@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.restaurant_ingredients_management.View.GiaoDich;
+import com.example.restaurant_ingredients_management.View.HinhAnh;
 import com.example.restaurant_ingredients_management.View.NguyenLieu;
 import com.example.restaurant_ingredients_management.View.NhaCungCap;
 import com.example.restaurant_ingredients_management.View.ThongBao;
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if(id==R.id.opThongBao){
             Intent intent = new Intent(MainActivity.this, ThongBao.class);
+            startActivity(intent);
+        }
+        if(id==R.id.opHinhAnh){
+            Intent intent = new Intent(MainActivity.this, HinhAnh.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

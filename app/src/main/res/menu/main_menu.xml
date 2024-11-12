@@ -16,4 +16,7 @@
     <item
         android:id="@+id/opNhaCungCap"
         android:title="Nhà cung cấp" />
+    <item
+        android:id="@+id/opHinhAnh"
+        android:title="Bảo trì hình ảnh" />
 </menu>

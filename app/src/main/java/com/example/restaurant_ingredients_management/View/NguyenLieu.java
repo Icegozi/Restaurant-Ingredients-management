@@ -59,6 +59,10 @@ public class NguyenLieu extends AppCompatActivity {
             Intent intent = new Intent(NguyenLieu.this, MainActivity.class);
             startActivity(intent);
         }
+        if (id==R.id.opHinhAnh){
+            Intent intent = new Intent(NguyenLieu.this, HinhAnh.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 

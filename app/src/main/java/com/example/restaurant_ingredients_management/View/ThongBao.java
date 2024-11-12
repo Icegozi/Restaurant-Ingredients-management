@@ -59,6 +59,10 @@ public class ThongBao extends AppCompatActivity {
             Intent intent = new Intent(ThongBao.this, MainActivity.class);
             startActivity(intent);
         }
+        if (id==R.id.opHinhAnh){
+            Intent intent = new Intent(ThongBao.this, HinhAnh.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 }
