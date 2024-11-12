@@ -62,26 +62,32 @@ public class GiaoDich extends AppCompatActivity {
         if(id == R.id.opGiaoDich){
             Intent intent = new Intent(GiaoDich.this, GiaoDich.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opNguyenLieu){
             Intent intent = new Intent(GiaoDich.this, NguyenLieu.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opNhaCungCap){
             Intent intent = new Intent(GiaoDich.this, NhaCungCap.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opThongBao){
             Intent intent = new Intent(GiaoDich.this, ThongBao.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opTrangChu){
             Intent intent = new Intent(GiaoDich.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
         if (id==R.id.opHinhAnh){
             Intent intent = new Intent(GiaoDich.this, HinhAnh.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

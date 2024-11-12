@@ -258,8 +258,9 @@
                     android:ems="10"
                     android:fontFamily="monospace"
                     android:gravity="top"
+                    android:padding="5sp"
                     android:hint="Nhập ghi chú ở đây"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
                     android:lines="@integer/material_motion_duration_long_1"
                     android:singleLine="false"
                     android:textSize="18sp" />

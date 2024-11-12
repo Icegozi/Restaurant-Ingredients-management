@@ -42,26 +42,32 @@ public class ThongBao extends AppCompatActivity {
         if(id == R.id.opGiaoDich){
             Intent intent = new Intent(ThongBao.this, GiaoDich.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opNguyenLieu){
             Intent intent = new Intent(ThongBao.this, NguyenLieu.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opNhaCungCap){
             Intent intent = new Intent(ThongBao.this, NhaCungCap.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opThongBao){
             Intent intent = new Intent(ThongBao.this, ThongBao.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opTrangChu){
             Intent intent = new Intent(ThongBao.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
         if (id==R.id.opHinhAnh){
             Intent intent = new Intent(ThongBao.this, HinhAnh.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

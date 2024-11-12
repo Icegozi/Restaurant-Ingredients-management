@@ -42,26 +42,32 @@ public class NhaCungCap extends AppCompatActivity {
         if(id == R.id.opGiaoDich){
             Intent intent = new Intent(NhaCungCap.this, GiaoDich.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opNguyenLieu){
             Intent intent = new Intent(NhaCungCap.this, NguyenLieu.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opNhaCungCap){
             Intent intent = new Intent(NhaCungCap.this, NhaCungCap.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opThongBao){
             Intent intent = new Intent(NhaCungCap.this, ThongBao.class);
             startActivity(intent);
+            finish();
         }
         if(id==R.id.opTrangChu){
             Intent intent = new Intent(NhaCungCap.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
         if (id==R.id.opHinhAnh){
             Intent intent = new Intent(NhaCungCap.this, HinhAnh.class);
             startActivity(intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
