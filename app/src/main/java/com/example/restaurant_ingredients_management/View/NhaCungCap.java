@@ -1,14 +1,18 @@
 package com.example.restaurant_ingredients_management.View;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.restaurant_ingredients_management.MainActivity;
 import com.example.restaurant_ingredients_management.R;
 
 public class NhaCungCap extends AppCompatActivity {
@@ -30,5 +34,31 @@ public class NhaCungCap extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.opGiaoDich){
+            Intent intent = new Intent(NhaCungCap.this, GiaoDich.class);
+            startActivity(intent);
+        }
+        if(id==R.id.opNguyenLieu){
+            Intent intent = new Intent(NhaCungCap.this, NguyenLieu.class);
+            startActivity(intent);
+        }
+        if(id==R.id.opNhaCungCap){
+            Intent intent = new Intent(NhaCungCap.this, NhaCungCap.class);
+            startActivity(intent);
+        }
+        if(id==R.id.opThongBao){
+            Intent intent = new Intent(NhaCungCap.this, ThongBao.class);
+            startActivity(intent);
+        }
+        if(id==R.id.opTrangChu){
+            Intent intent = new Intent(NhaCungCap.this, MainActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

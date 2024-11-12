@@ -5,39 +5,27 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/test"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="168dp"
-        android:layout_marginTop="340dp"
-        android:text="Nguyên liệu"
+        android:layout_marginTop="96dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bo_bit_tet" />
 
-    <Button
-        android:id="@+id/btn_chuyen"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="424dp"
-        android:layout_weight="1"
-        android:text="Giao dịch"
-        app:layout_constraintStart_toEndOf="@+id/btn_ncc"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_ncc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="424dp"
-        android:layout_weight="1"
-        android:text="Nha cung cap"
+        android:layout_marginTop="8dp"
+        android:fontFamily="monospace"
+        android:text="Bò bít tết / 89$ - là món chính tại nhà hàng, hương vi đậm đà, dai giòn khiến bạn cảm nhận được mỹ vị tuyệt hảo nhất của thịt bò"
+        android:textAlignment="center"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Tổng quan" />
-    <item android:title="Giao dịch" />
-    <item android:title="Nhà cung cấp" />
-    <item android:title="Thông báo" />
-    <item android:title="Nguyên liệu" />
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/opTrangChu"
+        android:title="Trang chủ" />
+    <item
+        android:id="@+id/opGiaoDich"
+        android:title="Giao dịch" />
+    <item
+        android:id="@+id/opThongBao"
+        android:title="Thông báo" />
+    <item
+        android:id="@+id/opNguyenLieu"
+        android:title="Nguyên liệu" />
+    <item
+        android:id="@+id/opNhaCungCap"
+        android:title="Nhà cung cấp" />
 </menu>
