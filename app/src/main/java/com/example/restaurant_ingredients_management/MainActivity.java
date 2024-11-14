@@ -11,6 +11,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.restaurant_ingredients_management.Database.CreateDatabase;
 import com.example.restaurant_ingredients_management.View.GiaoDich;
 import com.example.restaurant_ingredients_management.View.HinhAnh;
 import com.example.restaurant_ingredients_management.View.NguyenLieu;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 //            return insets;
 //        });
         setTitle("Trang chủ");
+        CreateDatabase createDatabase = new CreateDatabase(MainActivity.this);
+        createDatabase.open();
 
     }
 
