@@ -5,13 +5,14 @@ import java.util.Date;
 public class Ingredient {
     private int id;               // ID của nguyên liệu (Primary Key)
     private String name;          // Tên nguyên liệu
+    private byte[] imageData;     // Ảnh của nguyên liệu
     private double quantity;      // Số lượng hiện tại
     private String unit;          // Đơn vị đo lường (vd: kg, gram, lít)
-    private Date expirationDate;  // Hạn sử dụng
+    private long expirationDate;  // Hạn sử dụng
     private boolean isLowStock;   // Trạng thái nếu số lượng thấp
-    private Date lastUpdated;     // Ngày cập nhật cuối cùng
+    private long lastUpdated;     // Ngày cập nhật cuối cùng
 
-    public Ingredient(int id, String name, double quantity, String unit, Date expirationDate, boolean isLowStock, Date lastUpdated) {
+    public Ingredient(int id, String name, double quantity, String unit, long expirationDate, boolean isLowStock, long lastUpdated) {
         this.id = id;
         this.name = name;
         this.quantity = quantity;
@@ -21,6 +22,9 @@ public class Ingredient {
         this.lastUpdated = lastUpdated;
     }
 
+    public Ingredient(){
+
+    }
     public int getId() {
         return id;
     }
@@ -35,6 +39,14 @@ public class Ingredient {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public byte[] getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
     }
 
     public double getQuantity() {
@@ -53,11 +65,11 @@ public class Ingredient {
         this.unit = unit;
     }
 
-    public Date getExpirationDate() {
+    public long getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(long expirationDate) {
         this.expirationDate = expirationDate;
     }
 
@@ -69,11 +81,11 @@ public class Ingredient {
         isLowStock = lowStock;
     }
 
-    public Date getLastUpdated() {
+    public long getLastUpdated() {
         return lastUpdated;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
+    public void setLastUpdated(long lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
 }

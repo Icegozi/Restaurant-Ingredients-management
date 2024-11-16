@@ -6,10 +6,10 @@ public class StockAlert {
     private int id;                   // ID cảnh báo (Primary Key)
     private int ingredientId;         // ID của nguyên liệu liên quan
     private String alertType;         // Loại cảnh báo ("low_stock" hoặc "near_expiration")
-    private Date alertDate;           // Ngày tạo cảnh báo
+    private long alertDate;           // Ngày tạo cảnh báo
     private boolean isResolved;       // Trạng thái đã xử lý
 
-    public StockAlert(int id, int ingredientId, String alertType, Date alertDate, boolean isResolved) {
+    public StockAlert(int id, int ingredientId, String alertType, long alertDate, boolean isResolved) {
         this.id = id;
         this.ingredientId = ingredientId;
         this.alertType = alertType;
@@ -41,11 +41,11 @@ public class StockAlert {
         this.alertType = alertType;
     }
 
-    public Date getAlertDate() {
+    public long getAlertDate() {
         return alertDate;
     }
 
-    public void setAlertDate(Date alertDate) {
+    public void setAlertDate(long alertDate) {
         this.alertDate = alertDate;
     }
 

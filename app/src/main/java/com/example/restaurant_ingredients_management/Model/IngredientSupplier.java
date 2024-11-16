@@ -7,9 +7,9 @@ public class IngredientSupplier {
     private int ingredientId;    // ID nguyên liệu
     private int supplierId;      // ID nhà cung cấp
     private double pricePerUnit; // Giá trên mỗi đơn vị
-    private Date supplyDate;     // Ngày cung cấp gần nhất
+    private long supplyDate;     // Ngày cung cấp gần nhất
 
-    public IngredientSupplier(int id, int ingredientId, int supplierId, double pricePerUnit, Date supplyDate) {
+    public IngredientSupplier(int id, int ingredientId, int supplierId, double pricePerUnit, long supplyDate) {
         this.id = id;
         this.ingredientId = ingredientId;
         this.supplierId = supplierId;
@@ -49,11 +49,11 @@ public class IngredientSupplier {
         this.pricePerUnit = pricePerUnit;
     }
 
-    public Date getSupplyDate() {
+    public long getSupplyDate() {
         return supplyDate;
     }
 
-    public void setSupplyDate(Date supplyDate) {
+    public void setSupplyDate(long supplyDate) {
         this.supplyDate = supplyDate;
     }
 }
