@@ -12,7 +12,9 @@ public class Supplier {
         this.contactInfo = contactInfo;
         this.address = address;
     }
+    public Supplier(){
 
+    }
     public int getId() {
         return id;
     }
@@ -43,5 +45,14 @@ public class Supplier {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "id: " + id + "\n" +
+                "Tên nhà cung cấp: '" + name + '\n' +
+                "Thông tin liên hệ: " + contactInfo + '\n' +
+                "Địa chỉ: " + address + '\n';
     }
 }

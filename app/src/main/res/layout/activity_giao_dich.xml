@@ -136,7 +136,7 @@
                         android:popupElevation="18dp" />
 
                     <EditText
-                        android:id="@+id/editTextText"
+                        android:id="@+id/edt_so_luongNX"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

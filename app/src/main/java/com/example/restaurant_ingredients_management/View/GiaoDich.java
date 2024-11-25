@@ -21,6 +21,7 @@ import com.example.restaurant_ingredients_management.R;
 public class GiaoDich extends AppCompatActivity {
 
     Button btn_them_giao_dich, btn_lich_su_giao_dich;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -4,6 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -13,7 +18,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.restaurant_ingredients_management.MainActivity;
+import com.example.restaurant_ingredients_management.Model.Ingredient;
+import com.example.restaurant_ingredients_management.Model.IngredientSupplier;
+import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
+
+import java.util.ArrayList;
 
 public class NguyenLieu extends AppCompatActivity {
 
@@ -28,7 +38,9 @@ public class NguyenLieu extends AppCompatActivity {
             return insets;
         });
         setTitle("Nguyên liệu");
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

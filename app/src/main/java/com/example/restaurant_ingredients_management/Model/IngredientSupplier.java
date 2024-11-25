@@ -16,6 +16,9 @@ public class IngredientSupplier {
         this.pricePerUnit = pricePerUnit;
         this.supplyDate = supplyDate;
     }
+    public IngredientSupplier(){
+
+    }
 
     public int getId() {
         return id;
