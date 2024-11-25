@@ -1,5 +1,6 @@
 package com.example.restaurant_ingredients_management.Model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Ingredient {
@@ -89,12 +90,15 @@ public class Ingredient {
         this.lastUpdated = lastUpdated;
     }
 
+    public String convertLongToDate(long expirationDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        // Chuyển đổi từ long sang Date
+        Date date = new Date(expirationDate);
+        return sdf.format(date);
+    }
     @Override
     public String toString() {
-        return "Ingredient{" +
-                "name='" + name + '\'' +
-                ", unit='" + unit + '\'' +
-                ", quantity=" + quantity +
-                '}';
+        return "Tên nguyên liệu: " + name + "\n"+ "Số lượng: " + quantity +" "+ unit +"\n"+"Hạn sử dụng: "+convertLongToDate(expirationDate);
+
     }
 }
