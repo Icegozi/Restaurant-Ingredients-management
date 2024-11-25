@@ -7,10 +7,10 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".View.TongQuan">
+    tools:context=".View.NguyenLieu">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="#F5F5F5"
         android:orientation="vertical">
@@ -49,6 +49,14 @@
             android:layout_marginHorizontal="10sp"
             android:orientation="horizontal">
 
+            <Spinner
+                android:id="@+id/spDonViDo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_weight="1"
+                android:padding="5sp" />
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
@@ -60,14 +68,6 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
-
-            <Spinner
-                android:id="@+id/donViDo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1"
-                android:padding="5sp" />
 
         </LinearLayout>
 
@@ -91,7 +91,7 @@
                 android:textSize="18sp" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/btnDate"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -112,22 +112,22 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
                 android:padding="5sp"
-                android:text="Nhà cung cấp"
+                android:text="Nhà cung cấp "
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/spNhaCungCap"
 
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="5sp" />
 
         </LinearLayout>
 
         <EditText
-            android:id="@+id/ptGiaTien"
+            android:id="@+id/giaTien"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10sp"
@@ -158,15 +158,15 @@
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="40sp"
+                android:id="@+id/btnSua"
+                android:layout_width="43dp"
                 android:layout_height="40sp"
                 android:background="#F5F5F5"
                 app:srcCompat="@drawable/settings"
                 tools:srcCompat="@drawable/settings" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/btnThem"
                 android:layout_width="40sp"
                 android:layout_height="40sp"
                 android:background="#F5F5F5"
@@ -176,14 +176,14 @@
         </LinearLayout>
 
         <ListView
+            android:id="@+id/lvNguyenLieu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10sp"
             android:background="@drawable/edittext_border"
             android:paddingHorizontal="5sp"
-            android:paddingTop="10sp"
 
-            />
+            android:paddingTop="10sp" />
     </LinearLayout>
 
 </LinearLayout>

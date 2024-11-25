@@ -12,9 +12,9 @@ public class Ingredient {
     private boolean isLowStock;   // Trạng thái nếu số lượng thấp
     private long lastUpdated;     // Ngày cập nhật cuối cùng
 
-    public Ingredient(int id, String name, double quantity, String unit, long expirationDate, boolean isLowStock, long lastUpdated) {
-        this.id = id;
+    public Ingredient( String name, byte[] imageData, double quantity, String unit, long expirationDate, boolean isLowStock, long lastUpdated) {
         this.name = name;
+        this.imageData = imageData;
         this.quantity = quantity;
         this.unit = unit;
         this.expirationDate = expirationDate;
@@ -87,5 +87,14 @@ public class Ingredient {
 
     public void setLastUpdated(long lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "name='" + name + '\'' +
+                ", unit='" + unit + '\'' +
+                ", quantity=" + quantity +
+                '}';
     }
 }

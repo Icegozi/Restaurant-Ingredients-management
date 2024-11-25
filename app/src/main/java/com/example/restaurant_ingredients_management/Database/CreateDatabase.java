@@ -56,6 +56,8 @@ public class CreateDatabase extends SQLiteOpenHelper {
     public static final String COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT = "pricePerUnit";
     public static final String COLUMN_INGREDIENT_SUPPLIER_SUPPLY_DATE = "supplyDate";
 
+
+
     public CreateDatabase(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -66,8 +68,9 @@ public class CreateDatabase extends SQLiteOpenHelper {
         String CREATE_TABLE_INGREDIENT = "CREATE TABLE " + TABLE_INGREDIENTS + " ("
                 + COLUMN_INGREDIENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_INGREDIENT_NAME + " TEXT NOT NULL, "
-                + COLUMN_INGREDIENT_IMAGE + " BLOB, " + COLUMN_INGREDIENT_QUANTITY
-                + " REAL NOT NULL, " + COLUMN_INGREDIENT_UNIT + " TEXT, "
+                + COLUMN_INGREDIENT_IMAGE + " BLOB, "
+                + COLUMN_INGREDIENT_QUANTITY + " REAL NOT NULL, "
+                + COLUMN_INGREDIENT_UNIT + " TEXT, "
                 + COLUMN_INGREDIENT_EXPIRATION_DATE + " INTEGER, "
                 + COLUMN_INGREDIENT_IS_LOW_STOCK + " INTEGER, "
                 + COLUMN_INGREDIENT_LAST_UPDATED + " INTEGER)";

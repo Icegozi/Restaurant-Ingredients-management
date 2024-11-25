@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".nha_cung_cap">
+    tools:context=".View.NhaCungCap">
 
     <LinearLayout
         android:layout_width="match_parent"
