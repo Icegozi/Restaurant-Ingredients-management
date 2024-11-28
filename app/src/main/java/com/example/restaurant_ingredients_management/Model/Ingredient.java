@@ -1,5 +1,6 @@
 package com.example.restaurant_ingredients_management.Model;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public class Ingredient {
@@ -87,5 +88,19 @@ public class Ingredient {
 
     public void setLastUpdated(long lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    public String toString() {
+        return "Ingredient{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageData=" + Arrays.toString(imageData) +
+                ", quantity=" + quantity +
+                ", unit='" + unit + '\'' +
+                ", expirationDate=" + expirationDate +
+                ", isLowStock=" + isLowStock +
+                ", lastUpdated=" + lastUpdated +
+                '}';
     }
 }

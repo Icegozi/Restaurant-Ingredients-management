@@ -55,6 +55,7 @@ public class NhaCungCap extends AppCompatActivity {
         btn_sua = findViewById(R.id.btn_sua_ncc);
         btn_them = findViewById(R.id.btn_them_ncc);
         btn_xoa = findViewById(R.id.btn_xoa_ncc);
+        btn_timkiem = findViewById(R.id.btn_timkiem_ncc);
         lv_ncc = findViewById(R.id.lv_ncc);
 
         //Khởi tạo Controller và Adapter
@@ -103,19 +104,30 @@ public class NhaCungCap extends AppCompatActivity {
             }
         });
         //khi an nut tim kiem
-
+        btn_timkiem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                XuLyTimKiem();
+            }
+        });
     }
-//    public void XuLyTimKiem()
-//    {
-//        String keyword = edt_ncc.getText().toString().trim();
-//        ArrayList<Supplier> results = supplierController.searchSuppliers(keyword);
-//
-//        if (results.isEmpty()) {
-//            Toast.makeText(this, "Không tìm thấy nhà cung cấp nào!", Toast.LENGTH_SHORT).show();
-//        } else {
-//            supplierAdapter.
-//        }
-//    }
+    public void XuLyTimKiem() {
+        String keyword = edt_ncc.getText().toString().trim();
+        ArrayList<Supplier> results = supplierController.searchSuppliers(keyword);
+        if (keyword.isEmpty()) {
+            supplierAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, supplierController.getAllSuppliers());
+            lv_ncc.setAdapter(supplierAdapter);
+            supplierAdapter.notifyDataSetChanged();
+        } else {
+            if (results.isEmpty()) {
+                Toast.makeText(this, "Không tìm thấy nhà cung cấp nào!", Toast.LENGTH_SHORT).show();
+            } else {
+                supplierAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, results);
+                lv_ncc.setAdapter(supplierAdapter);
+                supplierAdapter.notifyDataSetChanged();
+            }
+        }
+    }
     private void XulyXoa() {
         if (id_ncc == -1) {
             Toast.makeText(this, "Vui lòng chọn nhà cung cấp cần xóa!", Toast.LENGTH_SHORT).show();

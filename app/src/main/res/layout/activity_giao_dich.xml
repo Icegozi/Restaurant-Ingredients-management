@@ -80,7 +80,7 @@
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/editTextText2"
+                        android:id="@+id/edt_tk_ngay_thang"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -91,7 +91,7 @@
                         android:textSize="18sp" />
 
                     <ImageButton
-                        android:id="@+id/imageButton6"
+                        android:id="@+id/btn_chon_ngaythang_tk"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="#F5F5F5"
@@ -100,7 +100,7 @@
                 </LinearLayout>
 
                 <ImageButton
-                    android:id="@+id/imageButton5"
+                    android:id="@+id/btn_timkiem_gd"
                     android:layout_width="50sp"
                     android:layout_height="50sp"
                     android:background="#F5F5F5"
@@ -129,14 +129,14 @@
                     android:orientation="horizontal">
 
                     <Spinner
-                        android:id="@+id/spn_nguyen_lieu"
+                        android:id="@+id/spn_ten_nguyen_lieu"
                         android:layout_width="223dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:popupElevation="18dp" />
 
                     <EditText
-                        android:id="@+id/edt_so_luongNX"
+                        android:id="@+id/edt_so_luong_NX"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -179,6 +179,7 @@
                     android:textSize="18sp" />
 
                 <RadioGroup
+                    android:id="@+id/rd_nhap_xuat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5sp"
@@ -220,7 +221,7 @@
                         android:textSize="18sp" />
 
                     <ImageButton
-                        android:id="@+id/imageButton1"
+                        android:id="@+id/btn_chon_ngay_gd"
                         android:layout_width="25dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -243,7 +244,7 @@
                         android:textSize="18sp" />
 
                     <Spinner
-                        android:id="@+id/gdNhaCungCap"
+                        android:id="@+id/spn_ten_nha_cc"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
@@ -258,33 +259,34 @@
                     android:ems="10"
                     android:fontFamily="monospace"
                     android:gravity="top"
-                    android:padding="5sp"
                     android:hint="Nhập ghi chú ở đây"
                     android:inputType="textMultiLine"
                     android:lines="@integer/material_motion_duration_long_1"
+                    android:padding="5sp"
                     android:singleLine="false"
                     android:textSize="18sp" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom|center"
                     android:layout_marginTop="10dp"
                     android:gravity="right"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/imageView1"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginRight="10dp"
-                        app:srcCompat="@drawable/baseline_add_24" />
+                    <ImageButton
+                        android:id="@+id/btn_them_gd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/baseline_add_24" />
 
-                    <ImageView
-                        android:id="@+id/imageView2"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        app:srcCompat="@drawable/settings" />
+                    <ImageButton
+                        android:id="@+id/btn_chinh_sua_gd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/settings" />
 
                 </LinearLayout>
 
