@@ -20,9 +20,6 @@ public class IngredientSupplier {
 
     }
 
-    public IngredientSupplier() {
-    }
-
     public int getId() {
         return id;
     }

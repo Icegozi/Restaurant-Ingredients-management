@@ -12,8 +12,6 @@ public class Supplier {
         this.contactInfo = contactInfo;
         this.address = address;
     }
-    public Supplier(){
-
     public Supplier() {
     }
 
