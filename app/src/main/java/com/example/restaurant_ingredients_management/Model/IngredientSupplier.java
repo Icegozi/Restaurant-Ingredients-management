@@ -17,6 +17,9 @@ public class IngredientSupplier {
         this.supplyDate = supplyDate;
     }
 
+    public IngredientSupplier() {
+    }
+
     public int getId() {
         return id;
     }

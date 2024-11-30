@@ -176,9 +176,7 @@ public class NguyenLieu extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void themNguyenLieu() {
-        Log.d("DEBUG", "Bắt đầu thêm nguyên liệu");
-
+    private void themNguyenLieu()  {
         String tenNguyenLieu = txtTenNguyenLieu.getText().toString().trim();
         String soLuongText = txtSoLuong.getText().toString().trim();
         String giaTienText = txtGiaTien.getText().toString().trim();
@@ -191,6 +189,7 @@ public class NguyenLieu extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
             return;
         }
+
 
         double soLuong;
         double giaTien;
@@ -215,6 +214,38 @@ public class NguyenLieu extends AppCompatActivity {
             return;
         }
 
+//        int idNhaCungCap = qlnl.getSupplierIdByName(tenNhaCungCap);
+        int idNhaCungCap = 2;
+
+
+        //Kiểm tra xem nguyên liệu có tồn tại trong csdl hay chưa
+        for(Ingredient x : qlnl.getAllIngredient()){
+            if(tenNguyenLieu.equalsIgnoreCase(x.getName())){
+                soLuong = soLuong + x.getQuantity();
+                qlnl.updateQuanlity_LastUpdate(x.getId(),soLuong);
+                Boolean ys = true;
+                for (IngredientSupplier sp : qlnl.getAllIngredientSuppliers()){
+                    if(x.getId() == sp.getIngredientId() && idNhaCungCap == sp.getSupplierId()){
+                        if (qlnl.updateIngredientPrice(sp.getId(),giaTien)){
+                            ys = false;
+                            break;
+                        }
+                    }
+                }
+                // Tạo đối tượng nhà cung cấp
+                if(ys){
+                    IngredientSupplier supplier = new IngredientSupplier(0, x.getId(), idNhaCungCap, giaTien, System.currentTimeMillis());
+                    boolean isIngredientSupplier = qlnl.themLienKet(supplier);
+                    if(isIngredientSupplier){
+                        resetText();
+                    }
+                }
+                Toast.makeText(this,"thêm nguyên liệu thành công 1",Toast.LENGTH_SHORT).show();
+                nguyenLieuListView();
+                return;
+            }
+        }
+
         // Tạo đối tượng nguyên liệu
         Ingredient ingredient = new Ingredient();
         ingredient.setName(tenNguyenLieu);
@@ -225,21 +256,15 @@ public class NguyenLieu extends AppCompatActivity {
         ingredient.setLastUpdated(System.currentTimeMillis());
 
 
-        Log.d("Selected Supplier", tenNhaCungCap);
-
-
-
         // Thêm nguyên liệu và liên kết vào cơ sở dữ liệu
         long idNguyenLieu = qlnl.themNguyenLieu(ingredient);
-
         boolean isSuccess = idNguyenLieu == 0 ? false : true;
         if (isSuccess) {
             Log.d("DEBUG", "Thêm nguyên liệu thành công");
             Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
             // Cập nhật lại ListView sau khi thêm nguyên liệu
             nguyenLieuListView();
-//            int idNhaCungCap = qlnl.getSupplierIdByName(tenNhaCungCap);
-            int idNhaCungCap = 2;
+//            int idNhaCungCap = 2;
             if (idNguyenLieu <= 0 || idNhaCungCap <= 0) {
                 Log.e("ERROR", "Ingredient ID hoặc Supplier ID không hợp lệ");
                 return; // Dừng lại nếu ID không hợp lệ

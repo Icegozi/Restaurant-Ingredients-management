@@ -19,7 +19,7 @@ public class QuanLyNguyenLieuController {
 
     // Cần truyền context vào khi khởi tạo QuanLyNguyenLieuDBO
     public QuanLyNguyenLieuController(Activity activity) {
-        qlnlDBO = new QuanLyNguyenLieuDBO(activity); // Truyền Activity vào
+        qlnlDBO = new QuanLyNguyenLieuDBO(activity);
     }
 
     // Thêm nguyên liệu
@@ -29,12 +29,11 @@ public class QuanLyNguyenLieuController {
             // Thêm nguyên liệu và lấy ID của nguyên liệu vừa thêm
             long ingredientId = qlnlDBO.insertIngredient(ingredient);
             if (ingredientId == -1)
-                return 0; // Thêm nguyên liệu thất bại
-
-            return ingredientId; // Thành công
+                return 0;
+            return ingredientId;
         } catch (Exception e) {
-            e.printStackTrace(); // Log lỗi nếu có
-            return 0; // Trả về false nếu có lỗi
+            e.printStackTrace();
+            return 0;
         } finally {
             qlnlDBO.close();
         }
@@ -126,4 +125,46 @@ public class QuanLyNguyenLieuController {
         }
     }
 
+    //Sửa số lượng của nguyên liệu
+    public boolean updateQuanlity_LastUpdate(int ingradient_id, double newQuantity){
+        qlnlDBO.open();
+        try {
+            int result = qlnlDBO.updateIngredientQuantity(ingradient_id,newQuantity);
+            if (result > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }finally {
+            qlnlDBO.close();
+        }
+    }
+
+    //trả lại danh sách bang IngredientSuppliers
+    public List<IngredientSupplier> getAllIngredientSuppliers() {
+        qlnlDBO.open();
+        try {
+            return qlnlDBO.getAllIngredientSuppliers();
+        }
+        finally {
+            qlnlDBO.close();
+        }
+    }
+
+    //Cập nhật bang IngredientSuppliers
+    public boolean updateIngredientPrice(int ingredientId, double newPrice) {
+        qlnlDBO.open();
+        try {
+            int i = qlnlDBO.updateIngredientPrice(ingredientId, newPrice);
+            if (i>0){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } finally {
+            qlnlDBO.close();
+        }
+    }
 }

@@ -115,6 +115,20 @@ public class QuanLyNguyenLieuDBO {
         return db.update(CreateDatabase.TABLE_INGREDIENTS, values, whereClause, whereArgs);
     }
 
+    // Cập nhật số lượng của nguyên liệu theo id
+    public int updateIngredientQuantity(int ingredientId, double newQuantity) {
+        ContentValues values = new ContentValues();
+        values.put(CreateDatabase.COLUMN_INGREDIENT_QUANTITY, newQuantity);
+        //lấy thời gian hiên tại của hệ thống
+        long currentTime = System.currentTimeMillis();
+        values.put(CreateDatabase.COLUMN_INGREDIENT_LAST_UPDATED, currentTime);
+
+        String whereClause = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(ingredientId)};
+
+        return db.update(CreateDatabase.TABLE_INGREDIENTS, values, whereClause, whereArgs);
+    }
+
     // Xóa một nguyên liệu
     public int deleteIngredient(int id) {
         String whereClause = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
@@ -136,6 +150,23 @@ public class QuanLyNguyenLieuDBO {
     }
 
 
+    // Phương thức lấy tất cả các bản ghi từ bảng IngredientSupplier
+    public List<IngredientSupplier> getAllIngredientSuppliers() {
+        List<IngredientSupplier> ingredientSuppliers = new ArrayList<>();
+        Cursor cursor = db.query(CreateDatabase.TABLE_INGREDIENT_SUPPLIERS, null, null, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                IngredientSupplier ingredientSupplier = new IngredientSupplier();
+                ingredientSupplier.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_ID)));
+                ingredientSupplier.setIngredientId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_INGREDIENT_ID)));
+                ingredientSupplier.setSupplierId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLIER_ID)));
+                ingredientSupplier.setPricePerUnit(cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT)));
+                ingredientSupplier.setSupplyDate(cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLY_DATE)));
+                ingredientSuppliers.add(ingredientSupplier);
+            } cursor.close();
+        }
+        return ingredientSuppliers;
+    }
 
     // Lấy danh sách nhà cung cấp cho một nguyên liệu
     public List<IngredientSupplier> getSuppliersByIngredientId(int ingredientId) {
@@ -187,6 +218,17 @@ public class QuanLyNguyenLieuDBO {
 
         return suppliers;
     }
+
+    public int updateIngredientPrice(int ingredientId, double newPrice) {
+        ContentValues values = new ContentValues();
+        values.put(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT, newPrice);
+
+        String whereClause = CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_INGREDIENT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(ingredientId)};
+
+        return db.update(CreateDatabase.TABLE_INGREDIENT_SUPPLIERS, values, whereClause, whereArgs);
+    }
+
 
 
 }
