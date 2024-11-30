@@ -31,6 +31,7 @@ import com.example.restaurant_ingredients_management.Controller.QuanLyNguyenLieu
 import com.example.restaurant_ingredients_management.MainActivity;
 import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.IngredientSupplier;
+import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
 
 import java.text.ParseException;
@@ -121,9 +122,9 @@ public class NguyenLieu extends AppCompatActivity {
     // Đổ dữ liệu vào spinner nhà cung cấp
     private void nhaCungCapSpinner() {
         arrayNhaCungCap = new ArrayList<>();
-        arrayNhaCungCap.add("Icegozi");
-        arrayNhaCungCap.add("FKingDom");
-        arrayNhaCungCap.add("Sunset");
+        for (Supplier ncc : qlnl.getAllSuppliers()){
+            arrayNhaCungCap.add(ncc.getName());
+        }
         NhaCungCapAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, arrayNhaCungCap);
         spNhaCungCap.setAdapter(NhaCungCapAdapter);
     }
@@ -182,7 +183,7 @@ public class NguyenLieu extends AppCompatActivity {
         String soLuongText = txtSoLuong.getText().toString().trim();
         String giaTienText = txtGiaTien.getText().toString().trim();
         String hanSuDungText = txtHanSuDung.getText().toString().trim();
-        String tenNhaCungCap = spNhaCungCap.getSelectedItem().toString();
+        String donVi = spDonViDo.getSelectedItem().toString();
 
         // Kiểm tra nếu dữ liệu nhập vào không đầy đủ
         if (tenNguyenLieu.isEmpty() || soLuongText.isEmpty() || giaTienText.isEmpty() || hanSuDungText.isEmpty()) {
@@ -191,6 +192,11 @@ public class NguyenLieu extends AppCompatActivity {
             return;
         }
 
+        if(qlnl.getAllSuppliers().isEmpty()){
+            Toast.makeText(this, "Không có nhà cung cấp, vui lòng nhập nhà cung cấp!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String tenNhaCungCap = spNhaCungCap.getSelectedItem().toString();
 
         double soLuong;
         double giaTien;
@@ -215,9 +221,7 @@ public class NguyenLieu extends AppCompatActivity {
             return;
         }
 
-//        int idNhaCungCap = qlnl.getSupplierIdByName(tenNhaCungCap);
-        int idNhaCungCap = 2;
-
+        int idNhaCungCap = qlnl.getSupplierIdByName(tenNhaCungCap);
 
         //Kiểm tra xem nguyên liệu có tồn tại trong csdl hay chưa
         for(Ingredient x : qlnl.getAllIngredient()){
@@ -233,7 +237,7 @@ public class NguyenLieu extends AppCompatActivity {
                         }
                     }
                 }
-                // Tạo đối tượng nhà cung cấp
+                // Tạo đối tượng IngredientSupplier
                 if(ys){
                     IngredientSupplier supplier = new IngredientSupplier(0, x.getId(), idNhaCungCap, giaTien, System.currentTimeMillis());
                     boolean isIngredientSupplier = qlnl.themLienKet(supplier);
@@ -241,7 +245,7 @@ public class NguyenLieu extends AppCompatActivity {
                         resetText();
                     }
                 }
-                Toast.makeText(this,"thêm nguyên liệu thành công 1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Bổ sung nguyên liệu thành công",Toast.LENGTH_SHORT).show();
                 nguyenLieuListView();
                 return;
             }
@@ -251,7 +255,7 @@ public class NguyenLieu extends AppCompatActivity {
         Ingredient ingredient = new Ingredient();
         ingredient.setName(tenNguyenLieu);
         ingredient.setQuantity(soLuong);
-        ingredient.setUnit(spDonViDo.getSelectedItem().toString()); // Lấy đơn vị từ Spinner
+        ingredient.setUnit(donVi);
         ingredient.setExpirationDate(hanSuDung);
         ingredient.setLowStock(soLuong < 10);
         ingredient.setLastUpdated(System.currentTimeMillis());
@@ -263,13 +267,10 @@ public class NguyenLieu extends AppCompatActivity {
         if (isSuccess) {
             Log.d("DEBUG", "Thêm nguyên liệu thành công");
             Toast.makeText(this, "Thêm thành công", Toast.LENGTH_SHORT).show();
+
             // Cập nhật lại ListView sau khi thêm nguyên liệu
             nguyenLieuListView();
-//            int idNhaCungCap = 2;
-            if (idNguyenLieu <= 0 || idNhaCungCap <= 0) {
-                Log.e("ERROR", "Ingredient ID hoặc Supplier ID không hợp lệ");
-                return; // Dừng lại nếu ID không hợp lệ
-            }
+
             // Tạo đối tượng nhà cung cấp
             IngredientSupplier supplier = new IngredientSupplier(0, (int) idNguyenLieu, idNhaCungCap, giaTien, System.currentTimeMillis());
             boolean isIngredientSupplier = qlnl.themLienKet(supplier);

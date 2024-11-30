@@ -11,6 +11,7 @@ import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
 import com.example.restaurant_ingredients_management.View.NguyenLieu;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class QuanLyNguyenLieuController {
@@ -95,6 +96,19 @@ public class QuanLyNguyenLieuController {
         }
     }
 
+    // Lấy danh sách tất cả các nhà cung cấp
+    public ArrayList<Supplier> getAllSuppliers() {
+        qlnlDBO.open();
+        try {
+            return qlnlDBO.getAllSuppliers();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi nếu có
+            return null; // Trả về null nếu có lỗi
+        } finally {
+            qlnlDBO.close(); // Đảm bảo đóng cơ sở dữ liệu
+        }
+
+    }
     //lấy tên nguyên liệu theo id
     public int getIdByNameIngredient(String name){
         List<Ingredient> Temp = getAllIngredient();

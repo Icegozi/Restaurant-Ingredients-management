@@ -191,33 +191,6 @@ public class QuanLyNguyenLieuDBO {
         return suppliers;
     }
 
-    // Lấy tất cả các nhà cung cấp
-    public List<Supplier> getAllSuppliers() {
-        List<Supplier> suppliers = new ArrayList<>();
-        Cursor cursor = null;
-
-        try {
-            cursor = db.query(CreateDatabase.TABLE_SUPPLIERS, null, null, null, null, null, null);
-            if (cursor != null) {
-                while (cursor.moveToNext()) {
-                    Supplier supplier = new Supplier();
-                    supplier.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ID)));
-                    supplier.setName(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_NAME)));
-                    supplier.setContactInfo(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_CONTACT_INFO)));
-                    supplier.setAddress(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ADDRESS)));
-                    suppliers.add(supplier);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-
-        return suppliers;
-    }
 
     public int updateIngredientPrice(int ingredientId, double newPrice) {
         ContentValues values = new ContentValues();
@@ -229,6 +202,22 @@ public class QuanLyNguyenLieuDBO {
         return db.update(CreateDatabase.TABLE_INGREDIENT_SUPPLIERS, values, whereClause, whereArgs);
     }
 
-
+    // Lấy tất cả các nhà cung cấp
+    public ArrayList<Supplier> getAllSuppliers() {
+        ArrayList<Supplier> suppliers = new ArrayList<>();
+        Cursor cursor = db.query(CreateDatabase.TABLE_SUPPLIERS, null, null, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Supplier supplier = new Supplier();
+                supplier.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ID)));
+                supplier.setName(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_NAME)));
+                supplier.setContactInfo(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_CONTACT_INFO)));
+                supplier.setAddress(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ADDRESS)));
+                suppliers.add(supplier);
+            }
+            cursor.close();
+        }
+        return suppliers;
+    }
 
 }
