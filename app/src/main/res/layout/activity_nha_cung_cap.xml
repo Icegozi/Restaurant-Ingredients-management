@@ -44,7 +44,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextText3"
+            android:id="@+id/edt_tt_lienhe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -62,7 +62,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/editTextText4"
+            android:id="@+id/edt_dia_chi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -72,6 +72,7 @@
             android:textSize="18sp" />
 
         <ListView
+            android:id="@+id/lv_ncc"
             android:layout_width="match_parent"
             android:layout_height="196dp"
             android:background="@drawable/edittext_border" />
@@ -84,7 +85,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/btn_them_ncc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -96,7 +97,7 @@
                 app:cornerRadius="5dp" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/btn_xoa_ncc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -115,7 +116,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btn_sua_ncc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -127,7 +128,7 @@
                 app:cornerRadius="5dp" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btn_timkiem_ncc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

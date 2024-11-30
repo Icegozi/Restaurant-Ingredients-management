@@ -1,5 +1,7 @@
 package com.example.restaurant_ingredients_management.Model;
 
+import android.icu.text.SimpleDateFormat;
+
 import java.util.Date;
 
 public class Transaction {
@@ -19,6 +21,9 @@ public class Transaction {
         this.quantity = quantity;
         this.unit = unit;
         this.note = note;
+    }
+
+    public Transaction() {
     }
 
     public int getId() {
@@ -75,5 +80,19 @@ public class Transaction {
 
     public void setNote(String note) {
         this.note = note;
+    }
+    public String formatDate(long timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date(timestamp);
+        return sdf.format(date);
+    }
+    @Override
+    public String toString() {
+        return
+                "Ngày giao dịch: " + formatDate(transactionDate) + "\n" +
+                "Kiểu giao dịch: " + transactionType + '\n' +
+                "Số lượng: " + quantity + "\n"+
+                "Đơn vị: " + unit + '\n' +
+                "Ghi chú: " + note;
     }
 }
