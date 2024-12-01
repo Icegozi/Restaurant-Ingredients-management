@@ -109,6 +109,20 @@ public class QuanLyNguyenLieuController {
         }
 
     }
+
+    //Lấy một nhà cung cấp theo id
+    public Supplier getSupplierByid(int id){
+        qlnlDBO.open();
+        try {
+            return qlnlDBO.getSupplierById(id);
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi nếu có
+            return null; // Trả về null nếu có lỗi
+        } finally {
+            qlnlDBO.close(); // Đảm bảo đóng cơ sở dữ liệu
+        }
+    }
+
     //lấy tên nguyên liệu theo id
     public int getIdByNameIngredient(String name){
         List<Ingredient> Temp = getAllIngredient();
@@ -119,6 +133,7 @@ public class QuanLyNguyenLieuController {
         }
         return -1;
     }
+
 
     // Xóa nguyên liệu theo id
     public boolean deleteIngredient(int id) {
@@ -155,7 +170,7 @@ public class QuanLyNguyenLieuController {
         }
     }
 
-    //trả lại danh sách bang IngredientSuppliers
+    //trả lại danh sách bảng IngredientSuppliers
     public List<IngredientSupplier> getAllIngredientSuppliers() {
         qlnlDBO.open();
         try {
@@ -166,11 +181,27 @@ public class QuanLyNguyenLieuController {
         }
     }
 
-    //Cập nhật bang IngredientSuppliers
-    public boolean updateIngredientPrice(int ingredientId, double newPrice) {
+    //Cập nhật bảng IngredientSuppliers
+    public boolean updateIngredientPrice(int ingredientId, int supplierId, double newPrice) {
         qlnlDBO.open();
         try {
-            int i = qlnlDBO.updateIngredientPrice(ingredientId, newPrice);
+            int i = qlnlDBO.updateIngredientPrice(ingredientId,supplierId, newPrice);
+            if (i>0){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } finally {
+            qlnlDBO.close();
+        }
+    }
+
+    // Cập nhật thông tin nguyên liệu
+    public boolean updateIngredient(Ingredient ingredient){
+        qlnlDBO.open();
+        try {
+            int i = qlnlDBO.updateIngredient(ingredient);
             if (i>0){
                 return true;
             }

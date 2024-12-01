@@ -192,12 +192,13 @@ public class QuanLyNguyenLieuDBO {
     }
 
 
-    public int updateIngredientPrice(int ingredientId, double newPrice) {
+    public int updateIngredientPrice(int ingredientId, int supplierId, double newPrice) {
         ContentValues values = new ContentValues();
         values.put(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT, newPrice);
 
-        String whereClause = CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_INGREDIENT_ID + " = ?";
-        String[] whereArgs = {String.valueOf(ingredientId)};
+        String whereClause = CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_INGREDIENT_ID + " = ? AND "
+                + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLIER_ID + " = ?";
+        String[] whereArgs = {String.valueOf(ingredientId), String.valueOf(supplierId)};
 
         return db.update(CreateDatabase.TABLE_INGREDIENT_SUPPLIERS, values, whereClause, whereArgs);
     }
@@ -220,4 +221,20 @@ public class QuanLyNguyenLieuDBO {
         return suppliers;
     }
 
+    // Lấy một nhà cung cấp theo id
+    public Supplier getSupplierById(int id) {
+        Supplier supplier = null;
+        String selection = CreateDatabase.COLUMN_SUPPLIER_ID + "= ?";
+        String[] selectionArgs = { String.valueOf(id) };
+        Cursor cursor = db.query(CreateDatabase.TABLE_SUPPLIERS, null, selection, selectionArgs, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            supplier = new Supplier();
+            supplier.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ID)));
+            supplier.setName(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_NAME)));
+            supplier.setContactInfo(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_CONTACT_INFO)));
+            supplier.setAddress(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ADDRESS)));
+            cursor.close();
+        }
+        return supplier;
+    }
 }

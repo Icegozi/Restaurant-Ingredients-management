@@ -118,4 +118,6 @@ public class QuanLyNhaCungCapDBO {
         String[] whereArgs = { String.valueOf(id) };
         return db.delete(CreateDatabase.TABLE_SUPPLIERS, whereClause, whereArgs);
     }
+
+
 }

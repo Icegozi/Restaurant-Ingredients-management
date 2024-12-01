@@ -92,7 +92,6 @@ public class Ingredient {
 
     public String convertLongToDate(long expirationDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        // Chuyển đổi từ long sang Date
         Date date = new Date(expirationDate);
         return sdf.format(date);
     }

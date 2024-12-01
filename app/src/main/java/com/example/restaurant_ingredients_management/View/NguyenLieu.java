@@ -42,7 +42,7 @@ import java.util.Date;
 
 public class NguyenLieu extends AppCompatActivity {
     private EditText txtTenNguyenLieu, txtSoLuong, txtHanSuDung, txtGiaTien;
-    private ImageButton btnSua, btnThem, btnDate;
+    private ImageButton btnSua, btnThem, btnDate, btnRefresh;
     private ListView lvNguyenLieu;
     private Spinner spNhaCungCap, spDonViDo;
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -50,6 +50,7 @@ public class NguyenLieu extends AppCompatActivity {
     private ArrayList<String> arrayDonVi, arrayNhaCungCap;
     private ArrayAdapter<String> DonViAdapter, NhaCungCapAdapter;
     private ArrayAdapter<Ingredient> NguyenLieuAdapter;
+    private int position = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,20 +149,57 @@ public class NguyenLieu extends AppCompatActivity {
         btnDate = findViewById(R.id.btnDate);
         btnSua = findViewById(R.id.btnSua);
         btnThem = findViewById(R.id.btnThem);
+        btnRefresh = findViewById(R.id.btnRefresh);
         spDonViDo = findViewById(R.id.spDonViDo);
         spNhaCungCap = findViewById(R.id.spNhaCungCap);
         lvNguyenLieu = findViewById(R.id.lvNguyenLieu);
+
     }
 
     // Các thao tác khi bấm vào các button
     private void action() {
         btnThem.setOnClickListener(view -> themNguyenLieu());
         btnDate.setOnClickListener(view -> showDatePickerDialog());
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String tenNguyenLieu = txtTenNguyenLieu.getText().toString();
+                String tenNhaCungCap = spNhaCungCap.getSelectedItem().toString();
+                if(tenNguyenLieu.isEmpty()||tenNhaCungCap.isEmpty()){
+                    Toast.makeText(view.getContext(),"Nguyên liệu và nhà cung cấp bị bỏ trống!",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int nguyenLieuId = qlnl.getIdByNameIngredient(tenNguyenLieu);
+                int nhaCungCapId = qlnl.getSupplierIdByName(tenNhaCungCap);
+                for(IngredientSupplier ig : qlnl.getAllIngredientSuppliers()){
+                    if(ig.getIngredientId() == nguyenLieuId && ig.getSupplierId() == nhaCungCapId){
+                        txtGiaTien.setText(String.valueOf(ig.getPricePerUnit()));
+                        return;
+                    }
+                }
+                Toast.makeText(view.getContext(),"Không tồn tại giá tiền nguyên liệu của nhà cung cấp này",Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnSua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                suaNguyenLieu();
+            }
+        });
+
         lvNguyenLieu.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 xoaNguyenLieu(i);
                 return false;
+            }
+        });
+
+        lvNguyenLieu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                hienThiNguyenLieu(i);
+                position = i;
             }
         });
     }
@@ -231,10 +269,8 @@ public class NguyenLieu extends AppCompatActivity {
                 Boolean ys = true;
                 for (IngredientSupplier sp : qlnl.getAllIngredientSuppliers()){
                     if(x.getId() == sp.getIngredientId() && idNhaCungCap == sp.getSupplierId()){
-                        if (qlnl.updateIngredientPrice(sp.getId(),giaTien)){
-                            ys = false;
-                            break;
-                        }
+                        ys = false;
+                        break;
                     }
                 }
                 // Tạo đối tượng IngredientSupplier
@@ -247,6 +283,7 @@ public class NguyenLieu extends AppCompatActivity {
                 }
                 Toast.makeText(this,"Bổ sung nguyên liệu thành công",Toast.LENGTH_SHORT).show();
                 nguyenLieuListView();
+                resetText();
                 return;
             }
         }
@@ -316,12 +353,104 @@ public class NguyenLieu extends AppCompatActivity {
                 .show();
     }
 
+    //xóa thông tin trong các trường nhập
     private void resetText(){
         txtGiaTien.setText("");
         txtSoLuong.setText("");
         txtTenNguyenLieu.setText("");
         txtHanSuDung.setText("");
+        nhaCungCapSpinner();
         spNhaCungCap.setSelection(0);
         spDonViDo.setSelection(0);
+    }
+
+    //chuyển đổi thời gian từ long sang string
+    public String getDate(long dateInMillis) {
+        return sdf.format(new Date(dateInMillis));
+    }
+
+    //Đổ thông tin nguyên liệu vào giao diên
+    private void  hienThiNguyenLieu(int vitri){
+        Ingredient ingredient = qlnl.getAllIngredient().get(vitri);
+        txtTenNguyenLieu.setText(ingredient.getName());
+        txtSoLuong.setText(String.valueOf(ingredient.getQuantity()));
+        txtHanSuDung.setText(getDate(ingredient.getExpirationDate()));
+        ArrayList<String> arrayNCC = new ArrayList<>();
+        for(IngredientSupplier is : qlnl.getAllIngredientSuppliers()){
+            if(ingredient.getId() == is.getIngredientId()){
+                Supplier supplier = qlnl.getSupplierByid(is.getSupplierId());
+                arrayNCC.add(supplier.getName());
+            }
+        }
+        NhaCungCapAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, arrayNCC);
+        spNhaCungCap.setAdapter(NhaCungCapAdapter);
+        int p = arrayDonVi.indexOf(ingredient.getUnit());
+        if (p >= 0) {
+            spDonViDo.setSelection(p);
+        }
+    }
+
+    //Sửa nguyên liệu
+    private void suaNguyenLieu(){
+        if(position>-1){
+            Ingredient ingredient = qlnl.getAllIngredient().get(position);
+            String tenNguyenLieu = txtTenNguyenLieu.getText().toString().trim();
+            String soLuongText = txtSoLuong.getText().toString().trim();
+            String giaTienText = txtGiaTien.getText().toString().trim();
+            String hanSuDungText = txtHanSuDung.getText().toString().trim();
+            String donVi = spDonViDo.getSelectedItem().toString();
+            int idNhaCungCap = qlnl.getSupplierIdByName(spNhaCungCap.getSelectedItem().toString());
+            // Kiểm tra nếu dữ liệu nhập vào không đầy đủ
+            if (tenNguyenLieu.isEmpty() || soLuongText.isEmpty() || giaTienText.isEmpty() || hanSuDungText.isEmpty()) {
+                Log.d("DEBUG", "Thông tin không đầy đủ");
+                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double soLuong;
+            double giaTien;
+            long hanSuDung;
+
+            // Kiểm tra số lượng và giá tiền có hợp lệ hay không
+            try {
+                soLuong = Double.parseDouble(soLuongText);
+                giaTien = Double.parseDouble(giaTienText);
+            } catch (NumberFormatException e) {
+                Log.e("ERROR", "Lỗi định dạng số", e);
+                Toast.makeText(this, "Vui lòng nhập số hợp lệ cho số lượng và giá tiền!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Kiểm tra ngày hết hạn
+            try {
+                hanSuDung = sdf.parse(hanSuDungText).getTime();
+            } catch (ParseException e) {
+                Log.e("ERROR", "Lỗi khi phân tích ngày hết hạn", e);
+                Toast.makeText(this, "Ngày hết hạn không hợp lệ", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            ingredient.setName(tenNguyenLieu);
+            ingredient.setUnit(donVi);
+            ingredient.setExpirationDate(hanSuDung);
+            ingredient.setQuantity(soLuong);
+            ingredient.setLowStock(soLuong < 10);
+            ingredient.setLastUpdated(System.currentTimeMillis());
+            boolean sua = qlnl.updateIngredient(ingredient);
+            boolean updateGiaTien = false;
+            for(IngredientSupplier ip : qlnl.getAllIngredientSuppliers()){
+                if(ip.getIngredientId() == ingredient.getId()&&ip.getSupplierId()== idNhaCungCap){
+                    updateGiaTien = qlnl.updateIngredientPrice(ingredient.getId(),idNhaCungCap,giaTien);
+                    break;
+                }
+            }
+            if(sua && updateGiaTien) {
+                Toast.makeText(this, "Sửa nguyên liệu thành công", Toast.LENGTH_SHORT).show();
+                resetText();
+                position = -1;
+                nguyenLieuListView();
+            }
+        }else{
+            Toast.makeText(this,"Hãy chọn nguyện liệu trong danh sách trước khi sửa!",Toast.LENGTH_SHORT).show();
+        }
     }
 }
