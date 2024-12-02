@@ -1,21 +1,41 @@
 package com.example.restaurant_ingredients_management.View;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.restaurant_ingredients_management.Controller.QuanLyNguyenLieuController;
+import com.example.restaurant_ingredients_management.Controller.QuanLyThongBaoController;
+import com.example.restaurant_ingredients_management.Fragment.NotificationAdapter;
 import com.example.restaurant_ingredients_management.MainActivity;
+import com.example.restaurant_ingredients_management.Model.Ingredient;
+import com.example.restaurant_ingredients_management.Model.StockAlert;
 import com.example.restaurant_ingredients_management.R;
+import com.example.restaurant_ingredients_management.Utils.AlertUtils;
+
+import java.util.List;
 
 public class ThongBao extends AppCompatActivity {
+
+    private ListView lvThongBao;
+    private QuanLyThongBaoController thongBaoController;
+    private QuanLyNguyenLieuController nguyenLieuController;
+    private NotificationAdapter notificationAdapter; // Custom adapter cho thông báo
+    private ImageButton btnXoa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +48,63 @@ public class ThongBao extends AppCompatActivity {
             return insets;
         });
         setTitle("Thông báo");
+
+        // Ánh xạ view
+        lvThongBao = findViewById(R.id.lvThongBao);
+        btnXoa = findViewById(R.id.btnXoa);
+
+        // Khởi tạo controller
+        thongBaoController = new QuanLyThongBaoController(this);
+        nguyenLieuController = new QuanLyNguyenLieuController(this);
+
+        // Tự động kiểm tra nguyên liệu khi mở ứng dụng
+        checkAndUpdateAlerts();
+
+        // Hiển thị danh sách thông báo
+        loadNotifications();
+
+        // Xóa tất cả thông báo
+        removeAllNotification();
     }
 
+    private void removeAllNotification(){
+        btnXoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Tạo dialog xác nhận trước khi xóa
+                new AlertDialog.Builder(view.getContext())
+                        .setTitle("Xác nhận xóa")
+                        .setMessage("Bạn có chắc chắn muốn xóa tất cả thông báo không? ")
+                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                thongBaoController.clearAllStockAlerts();
+                                loadNotifications();
+                            }
+                        })
+                        .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Nếu người dùng chọn "Không", không làm gì cả
+                                dialog.dismiss();
+                            }
+                        })
+                        .setCancelable(false) // Không cho phép đóng dialog ngoài thao tác với nút
+                        .show();
+            }
+        });
+    }
+    private void checkAndUpdateAlerts() {
+        List<Ingredient> ingredients = nguyenLieuController.getAllIngredient();
+        AlertUtils.checkIngredients(this, ingredients);
+    }
+
+    private void loadNotifications() {
+        List<StockAlert> alerts = thongBaoController.getAllStockAlerts();
+        notificationAdapter = new NotificationAdapter(this, alerts);
+        lvThongBao.setAdapter(notificationAdapter);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);

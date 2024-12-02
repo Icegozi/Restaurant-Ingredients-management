@@ -2,8 +2,10 @@
 package com.example.restaurant_ingredients_management.View;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -23,22 +25,29 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.restaurant_ingredients_management.Controller.QuanLyNguyenLieuController;
 import com.example.restaurant_ingredients_management.MainActivity;
+
 import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.IngredientSupplier;
 import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
+import com.example.restaurant_ingredients_management.Utils.NotificationUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 
 public class NguyenLieu extends AppCompatActivity {
     private EditText txtTenNguyenLieu, txtSoLuong, txtHanSuDung, txtGiaTien;
@@ -72,6 +81,7 @@ public class NguyenLieu extends AppCompatActivity {
         nhaCungCapSpinner();
         nguyenLieuListView();
         action();
+
     }
 
     @Override
@@ -200,6 +210,7 @@ public class NguyenLieu extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 hienThiNguyenLieu(i);
                 position = i;
+
             }
         });
     }

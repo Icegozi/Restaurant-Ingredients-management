@@ -23,6 +23,13 @@ public class Ingredient {
         this.lastUpdated = lastUpdated;
     }
 
+
+
+    // Kiểm tra trạng thái "expiration"
+    public boolean isExpired() {
+        return expirationDate < System.currentTimeMillis();
+    }
+
     public Ingredient(){
 
     }

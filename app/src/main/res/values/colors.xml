@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="resolved_background">#D6EAF8</color> <!-- Màu nền khi đã giải quyết -->
+    <color name="unresolved_background">#FADBD8</color> <!-- Màu nền khi chưa giải quyết -->
+    <color name="resolved_text">#1B4F72</color> <!-- Màu chữ khi đã giải quyết -->
+    <color name="unresolved_text">#922B21</color> <!-- Màu chữ khi chưa giải quyết -->
 </resources>

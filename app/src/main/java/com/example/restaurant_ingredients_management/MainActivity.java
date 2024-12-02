@@ -1,5 +1,6 @@
 package com.example.restaurant_ingredients_management;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,13 +11,20 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.restaurant_ingredients_management.Database.CreateDatabase;
+import com.example.restaurant_ingredients_management.Utils.NotificationUtils;
 import com.example.restaurant_ingredients_management.View.GiaoDich;
 import com.example.restaurant_ingredients_management.View.HinhAnh;
 import com.example.restaurant_ingredients_management.View.NguyenLieu;
 import com.example.restaurant_ingredients_management.View.NhaCungCap;
 import com.example.restaurant_ingredients_management.View.ThongBao;
+import com.example.restaurant_ingredients_management.Workers.IngredientCheckWorker;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Trang chủ");
         CreateDatabase createDatabase = new CreateDatabase(MainActivity.this);
         createDatabase.open();
+
+
 
     }
 

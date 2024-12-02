@@ -9,8 +9,10 @@ public class StockAlert {
     private long alertDate;           // Ngày tạo cảnh báo
     private boolean isResolved;       // Trạng thái đã xử lý
 
-    public StockAlert(int id, int ingredientId, String alertType, long alertDate, boolean isResolved) {
-        this.id = id;
+    public StockAlert() {
+    }
+
+    public StockAlert(int ingredientId, String alertType, long alertDate, boolean isResolved) {
         this.ingredientId = ingredientId;
         this.alertType = alertType;
         this.alertDate = alertDate;
