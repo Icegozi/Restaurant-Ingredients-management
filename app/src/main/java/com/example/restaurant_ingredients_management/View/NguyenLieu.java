@@ -40,6 +40,7 @@ import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.IngredientSupplier;
 import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
+import com.example.restaurant_ingredients_management.Utils.AlertUtils;
 import com.example.restaurant_ingredients_management.Utils.NotificationUtils;
 
 import java.text.ParseException;
@@ -47,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 public class NguyenLieu extends AppCompatActivity {
@@ -119,6 +121,8 @@ public class NguyenLieu extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
     // Đổ dữ liệu vào spinner đơn vị
     private void donViSpinner() {
@@ -275,8 +279,8 @@ public class NguyenLieu extends AppCompatActivity {
         //Kiểm tra xem nguyên liệu có tồn tại trong csdl hay chưa
         for(Ingredient x : qlnl.getAllIngredient()){
             if(tenNguyenLieu.equalsIgnoreCase(x.getName())){
-                soLuong = soLuong + x.getQuantity();
-                qlnl.updateQuanlity_LastUpdate(x.getId(),soLuong);
+//                soLuong = soLuong + x.getQuantity();
+//                qlnl.updateQuanlity_LastUpdate(x.getId(),soLuong);
                 Boolean ys = true;
                 for (IngredientSupplier sp : qlnl.getAllIngredientSuppliers()){
                     if(x.getId() == sp.getIngredientId() && idNhaCungCap == sp.getSupplierId()){
@@ -292,7 +296,7 @@ public class NguyenLieu extends AppCompatActivity {
                         resetText();
                     }
                 }
-                Toast.makeText(this,"Bổ sung nguyên liệu thành công",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Bổ sung nhà cung cấp cho nguyên liệu thành công",Toast.LENGTH_SHORT).show();
                 nguyenLieuListView();
                 resetText();
                 return;
@@ -348,6 +352,7 @@ public class NguyenLieu extends AppCompatActivity {
                             // Cập nhật lại ListView sau khi xóa nguyên liệu
                             nguyenLieuListView();
                             Toast.makeText(NguyenLieu.this, "Xóa nguyên liệu thành công", Toast.LENGTH_SHORT).show();
+                            resetText();
                         } else {
                             Toast.makeText(NguyenLieu.this, "Xóa nguyên liệu thất bại", Toast.LENGTH_SHORT).show();
                         }

@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -35,7 +37,8 @@ public class ThongBao extends AppCompatActivity {
     private QuanLyThongBaoController thongBaoController;
     private QuanLyNguyenLieuController nguyenLieuController;
     private NotificationAdapter notificationAdapter; // Custom adapter cho thông báo
-    private ImageButton btnXoa;
+    private ImageButton btnXoa,btnStar,btnRestart;
+    private TextView tvSoLuong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,21 +53,46 @@ public class ThongBao extends AppCompatActivity {
         setTitle("Thông báo");
 
         // Ánh xạ view
+        anhXaThuocTinh();
+        // Tự động kiểm tra nguyên liệu khi mở ứng dụng
+//        nguyenLieuController.checkAndUpdateAlerts(this);
+        // Hiển thị danh sách thông báo
+        loadNotifications();
+        // Xóa tất cả thông báo
+        removeAllNotification();
+        // Hiển thị thông báo chưa đánh dấu
+        showUnResolvedAlerts();
+    }
+
+    private void anhXaThuocTinh(){
         lvThongBao = findViewById(R.id.lvThongBao);
         btnXoa = findViewById(R.id.btnXoa);
-
+        btnRestart = findViewById(R.id.btnRestart);
+        btnStar = findViewById(R.id.btnStar);
+        tvSoLuong = findViewById(R.id.tvSoLuong);
         // Khởi tạo controller
         thongBaoController = new QuanLyThongBaoController(this);
         nguyenLieuController = new QuanLyNguyenLieuController(this);
+    }
 
-        // Tự động kiểm tra nguyên liệu khi mở ứng dụng
-        checkAndUpdateAlerts();
+    private void showUnResolvedAlerts(){
+        btnStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<StockAlert> alerts = thongBaoController.getUnresolvedAlerts();
+                notificationAdapter = new NotificationAdapter(view.getContext(), alerts, true); // Chế độ readonly
+                lvThongBao.setAdapter(notificationAdapter);
+                tvSoLuong.setText("Chưa xử lý: "+ alerts.size() );
+            }
+        });
 
-        // Hiển thị danh sách thông báo
-        loadNotifications();
 
-        // Xóa tất cả thông báo
-        removeAllNotification();
+        btnRestart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadNotifications();
+            }
+        });
     }
 
     private void removeAllNotification(){
@@ -95,15 +123,14 @@ public class ThongBao extends AppCompatActivity {
             }
         });
     }
-    private void checkAndUpdateAlerts() {
-        List<Ingredient> ingredients = nguyenLieuController.getAllIngredient();
-        AlertUtils.checkIngredients(this, ingredients);
-    }
+
+
 
     private void loadNotifications() {
         List<StockAlert> alerts = thongBaoController.getAllStockAlerts();
-        notificationAdapter = new NotificationAdapter(this, alerts);
+        notificationAdapter = new NotificationAdapter(this, alerts,false);
         lvThongBao.setAdapter(notificationAdapter);
+        tvSoLuong.setText("Bạn có "+ alerts.size() + " thông báo.");
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

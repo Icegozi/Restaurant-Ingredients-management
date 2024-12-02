@@ -17,12 +17,13 @@ import androidx.work.WorkManager;
 
 import com.example.restaurant_ingredients_management.Database.CreateDatabase;
 import com.example.restaurant_ingredients_management.Utils.NotificationUtils;
+import com.example.restaurant_ingredients_management.Utils.WorkManagerScheduler;
 import com.example.restaurant_ingredients_management.View.GiaoDich;
 import com.example.restaurant_ingredients_management.View.HinhAnh;
 import com.example.restaurant_ingredients_management.View.NguyenLieu;
 import com.example.restaurant_ingredients_management.View.NhaCungCap;
 import com.example.restaurant_ingredients_management.View.ThongBao;
-import com.example.restaurant_ingredients_management.Workers.IngredientCheckWorker;
+
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setTitle("Trang chủ");
         CreateDatabase createDatabase = new CreateDatabase(MainActivity.this);
         createDatabase.open();
-
+        // Lên lịch kiểm tra nguyên liệu định kỳ
+        WorkManagerScheduler.scheduleStockCheck(this);
 
 
     }

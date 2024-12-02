@@ -1,6 +1,7 @@
 package com.example.restaurant_ingredients_management.Controller;
 
 import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -9,6 +10,7 @@ import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.IngredientSupplier;
 import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
+import com.example.restaurant_ingredients_management.Utils.AlertUtils;
 import com.example.restaurant_ingredients_management.View.NguyenLieu;
 
 import java.util.ArrayList;
@@ -211,5 +213,11 @@ public class QuanLyNguyenLieuController {
         } finally {
             qlnlDBO.close();
         }
+    }
+
+    //kiểm tra số lượng và hạn sử dụng rồi thông báo
+    public void checkAndUpdateAlerts(Context context) {
+        List<Ingredient> ingredients = getAllIngredient();
+        AlertUtils.checkIngredients(context, ingredients);
     }
 }

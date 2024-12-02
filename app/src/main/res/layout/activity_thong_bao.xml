@@ -10,15 +10,52 @@
     tools:context=".View.ThongBao">
 
 
-    <ImageButton
-        android:id="@+id/btnXoa"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        android:backgroundTint="#F5F5F5"
-        android:layout_gravity="center"
-        android:src="@drawable/baseline_delete_24"
-        app:srcCompat="@drawable/baseline_delete_24" />
+        <ImageButton
+            android:id="@+id/btnRestart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#F5F5F5"
+            android:src="@drawable/baseline_restart_alt_24"
+            app:srcCompat="@drawable/baseline_restart_alt_24" />
+
+        <ImageButton
+            android:id="@+id/btnStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#F5F5F5"
+            android:src="@drawable/baseline_star_outline_24"
+            app:srcCompat="@drawable/baseline_star_outline_24" />
+
+        <ImageButton
+            android:id="@+id/btnXoa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#F5F5F5"
+            android:src="@drawable/baseline_delete_24"
+            app:srcCompat="@drawable/baseline_delete_24" />
+
+        <TextView
+            android:id="@+id/tvSoLuong"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:text="You had 3 alert"
+            android:textAlignment="center"
+            android:textColor="#F44336"
+            android:textSize="12sp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/lvThongBao"

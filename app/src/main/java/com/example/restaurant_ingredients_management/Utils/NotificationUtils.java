@@ -21,7 +21,7 @@ import com.example.restaurant_ingredients_management.R;
 public class NotificationUtils extends Application {
 
     public static final String CHANNEL_ID = "stock_alert_channel";
-    public static final int NOTIFICATION_ID = 100;
+//    public static final int NOTIFICATION_ID = 100;
 
     @Override
     public void onCreate(){

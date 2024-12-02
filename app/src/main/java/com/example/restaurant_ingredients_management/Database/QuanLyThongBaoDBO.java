@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.StockAlert;
 
 import java.util.ArrayList;
@@ -68,6 +69,28 @@ public class QuanLyThongBaoDBO {
         return alertList;
     }
 
+    // Lấy tất cả các nguyên liệu
+    public List<Ingredient> getAllIngredients() {
+        List<Ingredient> ingredients = new ArrayList<>();
+        Cursor cursor = db.query(CreateDatabase.TABLE_INGREDIENTS, null, null, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Ingredient ingredient = new Ingredient();
+                ingredient.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_ID)));
+                ingredient.setName(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_NAME)));
+                ingredient.setImageData(cursor.getBlob(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_IMAGE)));
+                ingredient.setQuantity(cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_QUANTITY)));
+                ingredient.setUnit(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_UNIT)));
+                ingredient.setExpirationDate(cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_EXPIRATION_DATE)));
+                ingredient.setLowStock(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_IS_LOW_STOCK)) == 1);
+                ingredient.setLastUpdated(cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_LAST_UPDATED)));
+                ingredients.add(ingredient);
+            }
+            cursor.close();
+        }
+        return ingredients;
+    }
+
     // Phương thức để lấy cảnh báo chưa xử lý
     public List<StockAlert> getUnresolvedAlerts() {
         List<StockAlert> alertList = new ArrayList<>();
@@ -106,8 +129,24 @@ public class QuanLyThongBaoDBO {
                 new String[]{String.valueOf(alertId)});
     }
 
+    // Phương thức để cập nhật trạng thái đã xử lý
+    public int unResolveAlert(int alertId) {
+        ContentValues values = new ContentValues();
+        values.put(CreateDatabase.COLUMN_STOCK_ALERT_IS_RESOLVED, 0);
+        return db.update(CreateDatabase.TABLE_STOCK_ALERTS, values,
+                CreateDatabase.COLUMN_STOCK_ALERT_ID + " = ?",
+                new String[]{String.valueOf(alertId)});
+    }
+
     // Phương thức để xóa tất cả cảnh báo
     public int deleteAllAlerts() {
         return db.delete(CreateDatabase.TABLE_STOCK_ALERTS, null, null);
+    }
+
+    // Phương thức để xóa cảnh báo theo id
+    public int deleteStockAlertById(int alertId) {
+        String whereClause = CreateDatabase.COLUMN_STOCK_ALERT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(alertId)};
+        return db.delete(CreateDatabase.TABLE_STOCK_ALERTS, whereClause, whereArgs);
     }
 }

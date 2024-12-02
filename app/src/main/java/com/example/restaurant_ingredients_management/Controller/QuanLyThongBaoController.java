@@ -2,7 +2,10 @@ package com.example.restaurant_ingredients_management.Controller;
 
 import android.content.Context;
 import com.example.restaurant_ingredients_management.Database.QuanLyThongBaoDBO;
+import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.StockAlert;
+import com.example.restaurant_ingredients_management.Utils.AlertUtils;
+
 import java.util.List;
 
 public class QuanLyThongBaoController {
@@ -10,6 +13,19 @@ public class QuanLyThongBaoController {
 
     public QuanLyThongBaoController(Context context) {
         thongBaoDBO = new QuanLyThongBaoDBO(context);
+    }
+
+    // Lấy tất cả nguyên liệu
+    public List<Ingredient> getAllIngredient() {
+        thongBaoDBO.open();
+        try {
+            return thongBaoDBO.getAllIngredients();
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi nếu có
+            return null; // Trả về null nếu có lỗi
+        } finally {
+            thongBaoDBO.close(); // Đảm bảo đóng cơ sở dữ liệu
+        }
     }
 
     // Thêm cảnh báo mới
@@ -52,6 +68,16 @@ public class QuanLyThongBaoController {
         }
     }
 
+    // Bỏ đánh dấu
+    public void unResolveStockAlert(int alertId) {
+        thongBaoDBO.open();
+        try {
+            thongBaoDBO.unResolveAlert(alertId);
+        } finally {
+            thongBaoDBO.close();
+        }
+    }
+
     // Xóa tất cả cảnh báo
     public void clearAllStockAlerts() {
         thongBaoDBO.open();
@@ -61,4 +87,16 @@ public class QuanLyThongBaoController {
             thongBaoDBO.close();
         }
     }
+
+    // Phương thức để xóa cảnh báo theo id
+    public int deleteStockAlertById(int alertId) {
+        thongBaoDBO.open();
+        try {
+            return thongBaoDBO.deleteStockAlertById(alertId);
+        } finally {
+            thongBaoDBO.close();
+        }
+    }
+
+
 }
