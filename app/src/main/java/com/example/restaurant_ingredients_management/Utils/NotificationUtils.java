@@ -9,6 +9,8 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.widget.Toast;
 
@@ -46,9 +48,10 @@ public class NotificationUtils extends Application {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
             // Sử dụng thời gian hiện tại để tạo notificationId
             int notificationId = (int) System.currentTimeMillis();
-
+            Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),R.drawable.banh_gio_mat_mia);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(android.R.drawable.ic_dialog_alert) // Replace with a custom icon if available
+                    .setLargeIcon(largeIcon)
                     .setContentTitle(title)
                     .setContentText(message)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)

@@ -6,4 +6,11 @@
     <color name="unresolved_background">#FADBD8</color> <!-- Màu nền khi chưa giải quyết -->
     <color name="resolved_text">#1B4F72</color> <!-- Màu chữ khi đã giải quyết -->
     <color name="unresolved_text">#922B21</color> <!-- Màu chữ khi chưa giải quyết -->
+
+    <color name="primary">#3F51B5</color>
+    <color name="list_background">#FAF0A8</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="button_background">#FF9800</color>
+    <color name="edit_text_background">#EEEEEE</color>
+    <color name="spinner_background">#E0F7FA</color>
 </resources>

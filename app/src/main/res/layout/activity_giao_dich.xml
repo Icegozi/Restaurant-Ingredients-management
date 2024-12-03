@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingTop="10dp"
     android:paddingRight="5dp"
@@ -20,9 +22,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
-        android:paddingBottom="10dp"
-        tools:layout_editor_absoluteX="10dp"
-        tools:layout_editor_absoluteY="10dp">
+        android:paddingBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
                 android:text="Thêm giao dịch"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:cornerRadius="5dp" />
 
             <Button
@@ -57,7 +57,7 @@
                 android:paddingLeft="0dp"
                 android:paddingRight="0dp"
                 android:text="Lịch sử giao dịch"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:cornerRadius="5dp" />
 
         </LinearLayout>
@@ -88,7 +88,7 @@
                         android:hint="yyyy/mm/dd"
                         android:inputType="text"
                         android:text=""
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <ImageButton
                         android:id="@+id/btn_chon_ngaythang_tk"
@@ -101,8 +101,8 @@
 
                 <ImageButton
                     android:id="@+id/btn_timkiem_gd"
-                    android:layout_width="50sp"
-                    android:layout_height="50sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="#F5F5F5"
                     android:src="@drawable/baseline_search_24"
                     tools:src="@drawable/baseline_search_24" />
@@ -144,7 +144,7 @@
                         android:fontFamily="monospace"
                         android:hint="Nhập số lượng"
                         android:inputType="text"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -160,7 +160,8 @@
                         android:layout_weight="1"
                         android:fontFamily="monospace"
                         android:text="Đơn vị: "
-                        android:textSize="18sp" />
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spn_donvido"
@@ -176,7 +177,8 @@
                     android:layout_marginTop="5sp"
                     android:fontFamily="monospace"
                     android:text="Loại giao dịch"
-                    android:textSize="18sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <RadioGroup
                     android:id="@+id/rd_nhap_xuat"
@@ -192,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="monospace"
                         android:text="Nhập"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
 
                     <RadioButton
                         android:id="@+id/rd_xuat"
@@ -200,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="monospace"
                         android:text="Xuất"
-                        android:textSize="18sp" />
+                        android:textSize="14sp" />
                 </RadioGroup>
 
                 <LinearLayout
@@ -212,17 +214,17 @@
                     <EditText
                         android:id="@+id/edt_ngay_giao_dich"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
                         android:fontFamily="monospace"
                         android:hint="Nhập ngày giao dịch"
                         android:inputType="text"
-                        android:textSize="18sp" />
+                        android:textSize="16sp" />
 
                     <ImageButton
                         android:id="@+id/btn_chon_ngay_gd"
-                        android:layout_width="25dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:backgroundTint="#F5F5F5"
@@ -240,8 +242,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:fontFamily="monospace"
-                        android:text="Nhà cung cấp"
-                        android:textSize="18sp" />
+                        android:text="Nhà cung cấp: "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
                     <Spinner
                         android:id="@+id/spn_ten_nha_cc"
@@ -264,7 +267,7 @@
                     android:lines="@integer/material_motion_duration_long_1"
                     android:padding="5sp"
                     android:singleLine="false"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -279,6 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:backgroundTint="#F5F5F5"
                         android:src="@drawable/baseline_add_24" />
 
                     <ImageButton
@@ -286,6 +290,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:backgroundTint="#F5F5F5"
                         android:src="@drawable/settings" />
 
                 </LinearLayout>
@@ -296,4 +301,4 @@
         </ViewSwitcher>
 
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

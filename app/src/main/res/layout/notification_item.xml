@@ -10,14 +10,16 @@
         android:id="@+id/tvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/unresolved_text" />
+        android:fontFamily="monospace"
+        android:textColor="@color/unresolved_text"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTimestamp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/unresolved_text" />
+        android:fontFamily="monospace"
+        android:textColor="@color/unresolved_text"
+        android:textSize="12sp" />
 </LinearLayout>

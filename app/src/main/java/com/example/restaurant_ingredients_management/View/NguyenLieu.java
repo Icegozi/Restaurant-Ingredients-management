@@ -42,6 +42,7 @@ import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
 import com.example.restaurant_ingredients_management.Utils.AlertUtils;
 import com.example.restaurant_ingredients_management.Utils.NotificationUtils;
+import com.example.restaurant_ingredients_management.Fragment.IngredientAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,6 +62,7 @@ public class NguyenLieu extends AppCompatActivity {
     private ArrayList<String> arrayDonVi, arrayNhaCungCap;
     private ArrayAdapter<String> DonViAdapter, NhaCungCapAdapter;
     private ArrayAdapter<Ingredient> NguyenLieuAdapter;
+    private IngredientAdapter ingredientAdapter;
     private int position = -1;
 
     @Override
@@ -146,9 +148,17 @@ public class NguyenLieu extends AppCompatActivity {
 
     // Đổ dữ liệu vào listview nguyên liệu
     private void nguyenLieuListView() {
+//        try {
+//            NguyenLieuAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, qlnl.getAllIngredient());
+//            lvNguyenLieu.setAdapter(NguyenLieuAdapter);
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
+
         try {
-            NguyenLieuAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, qlnl.getAllIngredient());
-            lvNguyenLieu.setAdapter(NguyenLieuAdapter);
+            List<Ingredient> ingredients = qlnl.getAllIngredient();
+            ingredientAdapter = new IngredientAdapter(this, ingredients);
+            lvNguyenLieu.setAdapter(ingredientAdapter);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
