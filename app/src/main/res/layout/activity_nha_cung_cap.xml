@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F5F5F5"
+        android:background="@color/resolved_background"
         android:orientation="vertical"
         android:padding="10sp"
         tools:layout_editor_absoluteX="0dp"
@@ -22,18 +22,21 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="Tên nhà cung cấp"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edt_ten_ncc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="10dp"
+            android:background="#F5F5F5"
             android:ems="10"
             android:fontFamily="monospace"
+            android:paddingHorizontal="5sp"
             android:hint="Nhập tên nhà cung cấp"
-
             android:inputType="text"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textView4"
@@ -41,17 +44,21 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="Thông tin liên hệ"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edt_tt_lienhe"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="10dp"
+            android:background="#F5F5F5"
             android:ems="10"
+            android:paddingHorizontal="5sp"
             android:fontFamily="monospace"
             android:hint="Nhập thông tin liên hệ"
             android:inputType="text"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/textView5"
@@ -59,23 +66,27 @@
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
             android:text="Địa chỉ"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/edt_dia_chi"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="33dp"
+            android:layout_marginTop="5sp"
+            android:layout_marginBottom="10dp"
+            android:background="#F5F5F5"
             android:ems="10"
             android:fontFamily="monospace"
             android:hint="Nhập địa chỉ"
+            android:paddingHorizontal="5sp"
             android:inputType="text"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <ListView
             android:id="@+id/lv_ncc"
             android:layout_width="match_parent"
             android:layout_height="196dp"
-            android:background="@drawable/edittext_border" />
+            android:background="#FAF09F" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -93,7 +104,7 @@
                 android:backgroundTint="#3C3D37"
                 android:fontFamily="monospace"
                 android:text="Thêm"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:cornerRadius="5dp" />
 
             <Button
@@ -106,13 +117,13 @@
                 android:backgroundTint="#3C3D37"
                 android:fontFamily="monospace"
                 android:text="Xóa"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:cornerRadius="5dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
@@ -124,7 +135,7 @@
                 android:backgroundTint="#3C3D37"
                 android:fontFamily="monospace"
                 android:text="Sửa"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:cornerRadius="5dp" />
 
             <Button
@@ -137,7 +148,7 @@
                 android:backgroundTint="#3C3D37"
                 android:fontFamily="monospace"
                 android:text="Tìm kiếm"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:cornerRadius="5dp" />
         </LinearLayout>
     </LinearLayout>

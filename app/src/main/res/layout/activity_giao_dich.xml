@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="0dp"
     android:layout_marginRight="0dp"
-    android:background="#F5F5F5"
+    android:background="@color/resolved_background"
     android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingTop="10dp"
@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F5F5F5"
+        android:background="@color/resolved_background"
         android:orientation="vertical"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
@@ -77,15 +77,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/edt_tk_ngay_thang"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="33dp"
+                        android:background="#F5F5F5"
+                        android:backgroundTint="#F5F5F5"
                         android:ems="10"
+                        android:paddingLeft="5dp"
                         android:fontFamily="monospace"
                         android:hint="yyyy/mm/dd"
+                        android:layout_marginRight="10dp"
                         android:inputType="text"
                         android:text=""
                         android:textSize="16sp" />
@@ -94,7 +99,7 @@
                         android:id="@+id/btn_chon_ngaythang_tk"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="#F5F5F5"
+                        android:background="@color/resolved_background"
                         android:src="@drawable/baseline_calendar_month_24"
                         tools:src="@drawable/baseline_calendar_month_24" />
                 </LinearLayout>
@@ -102,8 +107,9 @@
                 <ImageButton
                     android:id="@+id/btn_timkiem_gd"
                     android:layout_width="wrap_content"
+                    android:layout_marginVertical="10dp"
                     android:layout_height="wrap_content"
-                    android:background="#F5F5F5"
+                    android:background="@color/resolved_background"
                     android:src="@drawable/baseline_search_24"
                     tools:src="@drawable/baseline_search_24" />
 
@@ -112,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
 
-                    android:background="@drawable/edittext_border" />
+                    android:background="#FAF09F" />
 
 
             </LinearLayout>
@@ -125,21 +131,25 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_marginVertical="5sp"
                     android:orientation="horizontal">
 
                     <Spinner
                         android:id="@+id/spn_ten_nguyen_lieu"
-                        android:layout_width="223dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:background="#F5F5F5"
+                        android:layout_marginRight="10dp"
                         android:popupElevation="18dp" />
 
                     <EditText
                         android:id="@+id/edt_so_luong_NX"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="33dp"
                         android:layout_weight="1"
+                        android:background="#F5F5F5"
                         android:ems="10"
                         android:fontFamily="monospace"
                         android:hint="Nhập số lượng"
@@ -166,8 +176,9 @@
                     <Spinner
                         android:id="@+id/spn_donvido"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_height="33dp"
+                        android:layout_weight="1"
+                        android:background="#F5F5F5" />
                 </LinearLayout>
 
                 <TextView
@@ -214,9 +225,11 @@
                     <EditText
                         android:id="@+id/edt_ngay_giao_dich"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="33dp"
                         android:layout_weight="1"
+                        android:background="#F5F5F5"
                         android:ems="10"
+                        android:paddingLeft="5dp"
                         android:fontFamily="monospace"
                         android:hint="Nhập ngày giao dịch"
                         android:inputType="text"
@@ -227,7 +240,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:backgroundTint="#F5F5F5"
+                        android:backgroundTint="@color/resolved_background"
                         app:srcCompat="@drawable/baseline_calendar_month_24" />
 
                 </LinearLayout>
@@ -240,7 +253,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:fontFamily="monospace"
                         android:text="Nhà cung cấp: "
                         android:textSize="16sp"
@@ -249,7 +262,8 @@
                     <Spinner
                         android:id="@+id/spn_ten_nha_cc"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="33dp"
+                        android:background="#F5F5F5" />
 
                 </LinearLayout>
 
@@ -258,7 +272,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="163dp"
                     android:layout_margin="1dp"
-                    android:background="@drawable/edittext_border"
+                    android:background="#FAF09F"
                     android:ems="10"
                     android:fontFamily="monospace"
                     android:gravity="top"
@@ -282,7 +296,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="#F5F5F5"
+                        android:backgroundTint="@color/resolved_background"
                         android:src="@drawable/baseline_add_24" />
 
                     <ImageButton
@@ -290,7 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="#F5F5F5"
+                        android:backgroundTint="@color/resolved_background"
                         android:src="@drawable/settings" />
 
                 </LinearLayout>

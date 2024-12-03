@@ -5,16 +5,15 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
-    android:backgroundTint="#F5F5F5"
+    android:background="@color/resolved_background"
     android:orientation="vertical"
     android:visibility="visible"
     tools:context=".View.HinhAnh">
 
     <LinearLayout
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/textView6"
@@ -37,17 +36,18 @@
         android:id="@+id/imageButton7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F5F5F5"
         android:layout_gravity="center"
+        android:backgroundTint="@color/resolved_background"
         app:srcCompat="@drawable/baseline_add_24" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/edittext_border"
+        android:background="#FAF09F"
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -63,7 +63,7 @@
             android:layout_marginRight="10sp"
             android:backgroundTint="#3C3D37"
             android:fontFamily="monospace"
-            android:text="Thêm hình ảnh"
+            android:text="Lưu hình ảnh"
             android:textSize="18dp" />
 
         <Button
