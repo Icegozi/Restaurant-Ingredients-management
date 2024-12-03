@@ -11,7 +11,7 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imgNguyenLieu"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"

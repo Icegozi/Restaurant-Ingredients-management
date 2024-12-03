@@ -237,4 +237,53 @@ public class QuanLyNguyenLieuDBO {
         }
         return supplier;
     }
+
+    // Hàm cập nhật ảnh cho nguyên liệu dựa trên ID
+    public int saveIngredientImage(int ingredientId, byte[] imageData) {
+        ContentValues values = new ContentValues();
+        values.put(CreateDatabase.COLUMN_INGREDIENT_IMAGE, imageData);
+
+        String whereClause = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(ingredientId)};
+
+        try {
+            return db.update(CreateDatabase.TABLE_INGREDIENTS, values, whereClause, whereArgs);
+        } catch (SQLException e) {
+            Log.e("Database Error", "Lỗi khi lưu ảnh nguyên liệu: ", e);
+            return -1; // Trả về -1 nếu lỗi xảy ra
+        }
+    }
+
+    // Hàm lấy ảnh của nguyên liệu dựa trên ID
+    public byte[] getIngredientImage(int ingredientId) {
+        byte[] imageData = null; // Biến để lưu dữ liệu ảnh
+        String selection = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(ingredientId)};
+
+        Cursor cursor = null;
+        try {
+            cursor = db.query(
+                    CreateDatabase.TABLE_INGREDIENTS, // Tên bảng
+                    new String[]{CreateDatabase.COLUMN_INGREDIENT_IMAGE}, // Chỉ lấy cột ảnh
+                    selection, // Điều kiện
+                    selectionArgs, // Giá trị điều kiện
+                    null, // Không group by
+                    null, // Không having
+                    null // Không order by
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                // Lấy dữ liệu ảnh từ cột tương ứng
+                imageData = cursor.getBlob(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_IMAGE));
+            }
+        } catch (SQLException e) {
+            Log.e("Database Error", "Lỗi khi lấy ảnh nguyên liệu: ", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // Đóng Cursor để tránh rò rỉ bộ nhớ
+            }
+        }
+        return imageData; // Trả về dữ liệu ảnh (hoặc null nếu không tìm thấy)
+    }
+
 }

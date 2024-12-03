@@ -220,4 +220,31 @@ public class QuanLyNguyenLieuController {
         List<Ingredient> ingredients = getAllIngredient();
         AlertUtils.checkIngredients(context, ingredients);
     }
+
+    // Cập nhật ảnh của nguyên liệu
+    public boolean saveIngredientImage(int ingredientId, byte[] imageData){
+        qlnlDBO.open();
+        try {
+            int i = qlnlDBO.saveIngredientImage(ingredientId, imageData);
+            if (i>0){
+                return true;
+            }
+            else {
+                return false;
+            }
+        } finally {
+            qlnlDBO.close();
+        }
+    }
+
+    //lấy hình ảnh theo id nguyên liệu
+    public byte[] getIngredientImage(int ingredientId){
+        qlnlDBO.open();
+        try {
+            return qlnlDBO.getIngredientImage(ingredientId);
+        } finally {
+            qlnlDBO.close();
+        }
+    }
+
 }
