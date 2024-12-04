@@ -63,4 +63,8 @@ public class QuanLyGiaoDIchController {
     {
         return transactionDBO.getCurrentIngredientQuantity(ingredientId);
     }
+    public boolean updateIngredientQuantityById(int ingredientId, double newQuantity)
+    {
+        return transactionDBO.updateIngredientQuantityById(ingredientId, newQuantity);
+    }
 }

@@ -137,7 +137,7 @@
 
                     <Spinner
                         android:id="@+id/spn_ten_nguyen_lieu"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="#F5F5F5"
@@ -146,14 +146,14 @@
 
                     <EditText
                         android:id="@+id/edt_so_luong_NX"
-                        android:layout_width="wrap_content"
+                        android:layout_width="392dp"
                         android:layout_height="33dp"
                         android:layout_weight="1"
                         android:background="#F5F5F5"
                         android:ems="10"
                         android:fontFamily="monospace"
                         android:hint="Nhập số lượng"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textSize="16sp" />
                 </LinearLayout>
 

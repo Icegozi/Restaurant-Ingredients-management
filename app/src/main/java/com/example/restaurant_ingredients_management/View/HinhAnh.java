@@ -1,5 +1,6 @@
 package com.example.restaurant_ingredients_management.View;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -134,34 +136,53 @@ public class HinhAnh extends AppCompatActivity {
 
     private void luuHinhAnh() {
         String selectedIngredient = (String) spNguyenLieu.getSelectedItem();
-        if (selectedIngredient != null) {
-            int idNguyenLieu = 0;
-            for (Ingredient ingredient : qlnl.getAllIngredient()) {
-                if (ingredient.getName().equalsIgnoreCase(selectedIngredient)) {
-                    idNguyenLieu = ingredient.getId();
-                    break;
-                }
-            }
-            if (idNguyenLieu > 0) {
-                imgNguyenLieu.setDrawingCacheEnabled(true);
-                imgNguyenLieu.buildDrawingCache();
-                Bitmap bitmap = ((BitmapDrawable) imgNguyenLieu.getDrawable()).getBitmap();
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream); // Giảm chất lượng hình ảnh để giảm kích thước
-                byte[] imageData = stream.toByteArray();
+        // Tạo dialog xác nhận trước khi xóa
+        new AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn lưu ảnh cho nguyên liệu "+selectedIngredient+" không?")
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                boolean isSaved = qlnl.saveIngredientImage(idNguyenLieu, imageData);
-                if (isSaved) {
-                    Toast.makeText(this, "Lưu hình ảnh thành công!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Lưu hình ảnh thất bại!", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "Nguyên liệu không hợp lệ!", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "Vui lòng chọn nguyên liệu!", Toast.LENGTH_SHORT).show();
-        }
+                        if (selectedIngredient != null) {
+                            int idNguyenLieu = 0;
+                            for (Ingredient ingredient : qlnl.getAllIngredient()) {
+                                if (ingredient.getName().equalsIgnoreCase(selectedIngredient)) {
+                                    idNguyenLieu = ingredient.getId();
+                                    break;
+                                }
+                            }
+                            if (idNguyenLieu > 0) {
+                                imgNguyenLieu.setDrawingCacheEnabled(true);
+                                imgNguyenLieu.buildDrawingCache();
+                                Bitmap bitmap = ((BitmapDrawable) imgNguyenLieu.getDrawable()).getBitmap();
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream); // Giảm chất lượng hình ảnh để giảm kích thước
+                                byte[] imageData = stream.toByteArray();
+
+                                boolean isSaved = qlnl.saveIngredientImage(idNguyenLieu, imageData);
+                                if (isSaved) {
+                                    Toast.makeText(HinhAnh.this, "Lưu hình ảnh thành công!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(HinhAnh.this, "Lưu hình ảnh thất bại!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(HinhAnh.this, "Nguyên liệu không hợp lệ!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(HinhAnh.this, "Vui lòng chọn nguyên liệu!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Nếu người dùng chọn "Không", không làm gì cả
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false) // Không cho phép đóng dialog ngoài thao tác với nút
+                .show();
     }
 
     // Hàm để giảm kích thước ảnh nếu cần thiết

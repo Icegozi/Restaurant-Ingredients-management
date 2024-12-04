@@ -33,25 +33,33 @@ public class QuanLyGiaoDichDBO {
         dbHelper.close();
     }
 
-
-    // Lấy tất cả các giao dịch
     public ArrayList<Transaction> getAllTransactions() {
         ArrayList<Transaction> transactions = new ArrayList<>();
+        open();
+        if (db == null || !db.isOpen()) {
+            open();
+            throw new IllegalStateException("Database is closed or null!");
+        }
+
         Cursor cursor = db.query(CreateDatabase.TABLE_TRANSACTIONS, null, null, null, null, null, null);
         if (cursor != null) {
-            while (cursor.moveToNext()) {
-                Transaction transaction = new Transaction();
-                transaction.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_ID)));
-                transaction.setIngredientId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID)));
-                transaction.setTransactionDate(cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_DATE)));
-                transaction.setTransactionType(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_TYPE)));
-                transaction.setQuantity(cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_QUANTITY)));
-                transaction.setUnit(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_UNIT)));
-                transaction.setNote(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_NOTE)));
-                transactions.add(transaction);
+            try {
+                while (cursor.moveToNext()) {
+                    Transaction transaction = new Transaction();
+                    transaction.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_ID)));
+                    transaction.setIngredientId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID)));
+                    transaction.setTransactionDate(cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_DATE)));
+                    transaction.setTransactionType(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_TYPE)));
+                    transaction.setQuantity(cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_QUANTITY)));
+                    transaction.setUnit(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_UNIT)));
+                    transaction.setNote(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_NOTE)));
+                    transactions.add(transaction);
+                }
+            } finally {
+                cursor.close(); // Đảm bảo đóng cursor ở đây
             }
-            cursor.close();
         }
+
         return transactions;
     }
 
@@ -163,7 +171,7 @@ public class QuanLyGiaoDichDBO {
             System.out.println("Số lượng của nguyên liệu " + ingredientName + " còn " + currentQuantity + " +(-) " + quantity + " = " + newQuantity);
         }
     }
-//tim kiem giao dich theo ngay
+    //tim kiem giao dich theo ngay
     public ArrayList<Transaction> searchTransactionsByDate(String date) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
@@ -208,7 +216,7 @@ public class QuanLyGiaoDichDBO {
 
         return transactions; // Trả về danh sách giao dịch đã tìm thấy
     }
-//lay so tuong trong kho
+    //lay so tuong trong kho
     public int getCurrentIngredientQuantity(int ingredientId) {
         SQLiteDatabase db = this.dbHelper.getReadableDatabase();
         int currentQuantity = 0;
@@ -231,19 +239,6 @@ public class QuanLyGiaoDichDBO {
     public long addTransaction(Transaction transaction) {
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();
 
-        // Lấy số lượng nguyên liệu hiện tại trong kho
-        int currentQuantity = getCurrentIngredientQuantity(transaction.getIngredientId());
-
-        // Kiểm tra nếu là giao dịch xuất (output)
-        if (transaction.getTransactionType().equals("Xuất")) {
-            double remainingQuantity = currentQuantity -  transaction.getQuantity();
-
-            // Nếu số lượng còn lại sau khi trừ nhỏ hơn 0, báo không đủ
-            if (remainingQuantity < 0) {
-                return -1; // Trả về -1 nếu không đủ số lượng để xuất
-            }
-        }
-
         // Thêm giao dịch vào bảng Transactions
         ContentValues values = new ContentValues();
         values.put(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID, transaction.getIngredientId());
@@ -254,6 +249,25 @@ public class QuanLyGiaoDichDBO {
         values.put(CreateDatabase.COLUMN_TRANSACTION_NOTE, transaction.getNote());
 
         return db.insert(CreateDatabase.TABLE_TRANSACTIONS, null, values); // Thêm giao dịch
+    }
+    //ham cap nhat so luong cua 1 nguyen lieu theo id
+    public boolean updateIngredientQuantityById(int ingredientId, double newQuantity) {
+        // Lấy SQLiteDatabase để thực hiện truy vấn
+        SQLiteDatabase db = this.dbHelper.getWritableDatabase();  // Dùng phương thức này để có quyền ghi vào DB
+
+        // Tạo ContentValues để chứa các giá trị cần cập nhật
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(CreateDatabase.COLUMN_INGREDIENT_QUANTITY, newQuantity); // Cập nhật số lượng mới
+
+        // Thực hiện cập nhật, truyền vào điều kiện WHERE để chỉ cập nhật bản ghi có id tương ứng
+        int rowsAffected = db.update(CreateDatabase.TABLE_INGREDIENTS, contentValues,
+                CreateDatabase.COLUMN_INGREDIENT_ID + " = ?", new String[]{String.valueOf(ingredientId)});
+
+        // Đóng database sau khi xong
+        db.close();
+
+        // Kiểm tra kết quả cập nhật
+        return rowsAffected > 0; // Trả về true nếu có ít nhất một dòng bị ảnh hưởng
     }
 
 

@@ -286,4 +286,5 @@ public class QuanLyNguyenLieuDBO {
         return imageData; // Trả về dữ liệu ảnh (hoặc null nếu không tìm thấy)
     }
 
+
 }
