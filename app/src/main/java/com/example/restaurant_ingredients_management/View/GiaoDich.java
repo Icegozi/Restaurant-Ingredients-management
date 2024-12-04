@@ -77,7 +77,7 @@ public class GiaoDich extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        setTitle("Giao dich");
+        setTitle("Quản lý nhập/xuất");
         ViewSwitcher viewSwitcher = findViewById(R.id.viewSwitcher);
         btn_lich_su_giao_dich = findViewById(R.id.btn_lich_su_giao_dich);
         btn_them_giao_dich = findViewById(R.id.btn_them_giao_dich);

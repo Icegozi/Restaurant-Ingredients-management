@@ -6,7 +6,7 @@
         android:title="Trang chủ" />
     <item
         android:id="@+id/opGiaoDich"
-        android:title="Giao dịch" />
+        android:title="Nhập / Xuất" />
     <item
         android:id="@+id/opThongBao"
         android:title="Thông báo" />
@@ -18,5 +18,5 @@
         android:title="Nhà cung cấp" />
     <item
         android:id="@+id/opHinhAnh"
-        android:title="Bảo trì hình ảnh" />
+        android:title="Quản lý hình ảnh" />
 </menu>
