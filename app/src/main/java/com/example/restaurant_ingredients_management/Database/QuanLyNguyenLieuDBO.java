@@ -286,5 +286,13 @@ public class QuanLyNguyenLieuDBO {
         return imageData; // Trả về dữ liệu ảnh (hoặc null nếu không tìm thấy)
     }
 
+    public boolean deleteImageById(int ingredientId) {
+        ContentValues values = new ContentValues();
+        String whereClause = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
+        String[] whereArgs = {String.valueOf(ingredientId)};
+        values.put(CreateDatabase.COLUMN_INGREDIENT_IMAGE, (byte[]) null);
+        int rowsAffected = db.update(CreateDatabase.TABLE_INGREDIENTS, values, whereClause, whereArgs);
+        return rowsAffected > 0;
+    }
 
 }

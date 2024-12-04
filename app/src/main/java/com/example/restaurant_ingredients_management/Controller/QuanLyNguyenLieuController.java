@@ -247,4 +247,14 @@ public class QuanLyNguyenLieuController {
         }
     }
 
+    //lấy hình ảnh theo id nguyên liệu
+    public boolean deleteIngredientImage(int idNguyenLieu) {
+        qlnlDBO.open();
+        try {
+            return qlnlDBO.deleteImageById(idNguyenLieu);
+        } finally {
+            qlnlDBO.close();
+        }
+    }
+
 }
