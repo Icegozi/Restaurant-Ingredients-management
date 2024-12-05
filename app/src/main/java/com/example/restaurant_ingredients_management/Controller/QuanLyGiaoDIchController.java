@@ -3,17 +3,20 @@ package com.example.restaurant_ingredients_management.Controller;
 import android.content.Context;
 
 import com.example.restaurant_ingredients_management.Database.QuanLyGiaoDichDBO;
+import com.example.restaurant_ingredients_management.Database.QuanLyNhaCungCap_NguyenLieuDBO;
 import com.example.restaurant_ingredients_management.Model.Transaction;
 
 import java.util.ArrayList;
 
 public class QuanLyGiaoDIchController {
     private QuanLyGiaoDichDBO transactionDBO;
+    private QuanLyNhaCungCap_NguyenLieuDBO nhaCCCNguyenLieuDBO;
 
     public QuanLyGiaoDIchController(Context context) {
         transactionDBO = new QuanLyGiaoDichDBO(context);
         transactionDBO.open(); // Mở kết nối cơ sở dữ liệu
     }
+
 
     // Thêm giao dịch
     public long addTransaction(Transaction transaction) {
@@ -67,4 +70,6 @@ public class QuanLyGiaoDIchController {
     {
         return transactionDBO.updateIngredientQuantityById(ingredientId, newQuantity);
     }
+    //lấy giá cả nguyên liệu theo id nhà cung cấp và nguyên liệu
+
 }

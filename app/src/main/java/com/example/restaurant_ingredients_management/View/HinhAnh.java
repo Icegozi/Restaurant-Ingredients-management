@@ -41,7 +41,7 @@ public class HinhAnh extends AppCompatActivity {
     private Spinner spNguyenLieu;
     private ImageView imgNguyenLieu;
     private Button btnLuu, btnHienThi;
-    private ImageButton btnThem, btnXoa;
+    private ImageButton btnThem;
     private QuanLyNguyenLieuController qlnl;
     private ArrayList<String> nguyenLieuArrayList;
     private ArrayAdapter<String> nguyenLieuAdapter;
@@ -89,7 +89,6 @@ public class HinhAnh extends AppCompatActivity {
         btnLuu = findViewById(R.id.btnLuuAnh);
         btnHienThi = findViewById(R.id.btnHienThiAnh);
         btnThem = findViewById(R.id.btnThemAnh);
-        btnXoa = findViewById(R.id.btnXoaAnh);
         qlnl = new QuanLyNguyenLieuController(this);
     }
 
@@ -106,12 +105,6 @@ public class HinhAnh extends AppCompatActivity {
         btnHienThi.setOnClickListener(view -> hienThiHinhAnh());
         btnThem.setOnClickListener(view -> themHinhAnh());
         btnLuu.setOnClickListener(view -> luuHinhAnh());
-        btnXoa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                xoaHinhAnh();
-            }
-        });
     }
 
     private void hienThiHinhAnh() {
@@ -145,11 +138,12 @@ public class HinhAnh extends AppCompatActivity {
         String selectedIngredient = (String) spNguyenLieu.getSelectedItem();
         // Tạo dialog xác nhận trước khi xóa
         new AlertDialog.Builder(this)
-                .setTitle("Xác nhận lưu")
+                .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn lưu ảnh cho nguyên liệu "+selectedIngredient+" không?")
                 .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         if (selectedIngredient != null) {
                             int idNguyenLieu = 0;
                             for (Ingredient ingredient : qlnl.getAllIngredient()) {
@@ -159,28 +153,24 @@ public class HinhAnh extends AppCompatActivity {
                                 }
                             }
                             if (idNguyenLieu > 0) {
-                                try {
-                                    imgNguyenLieu.setDrawingCacheEnabled(true);
-                                    imgNguyenLieu.buildDrawingCache();
-                                    Bitmap bitmap = ((BitmapDrawable) imgNguyenLieu.getDrawable()).getBitmap();
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream); // Giảm chất lượng hình ảnh để giảm kích thước
-                                    byte[] imageData = stream.toByteArray();
-                                        boolean isSaved = qlnl.saveIngredientImage(idNguyenLieu, imageData);
-                                    if (isSaved) {
-                                        Toast.makeText(HinhAnh.this, "Lưu hình ảnh thành công!", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(HinhAnh.this, "Lưu hình ảnh thất bại!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }catch (Exception e){
-                                    Toast.makeText(HinhAnh.this, "Hãy chọn hình ảnh trước khi lưu!", Toast.LENGTH_SHORT).show();
-                                }
+                                imgNguyenLieu.setDrawingCacheEnabled(true);
+                                imgNguyenLieu.buildDrawingCache();
+                                Bitmap bitmap = ((BitmapDrawable) imgNguyenLieu.getDrawable()).getBitmap();
+                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream); // Giảm chất lượng hình ảnh để giảm kích thước
+                                byte[] imageData = stream.toByteArray();
 
+                                boolean isSaved = qlnl.saveIngredientImage(idNguyenLieu, imageData);
+                                if (isSaved) {
+                                    Toast.makeText(HinhAnh.this, "Lưu hình ảnh thành công!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(HinhAnh.this, "Lưu hình ảnh thất bại!", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 Toast.makeText(HinhAnh.this, "Nguyên liệu không hợp lệ!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            Toast.makeText(HinhAnh.this, "Vui lòng chọn nguyên liệu trước khi lưu!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HinhAnh.this, "Vui lòng chọn nguyên liệu!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -240,48 +230,5 @@ public class HinhAnh extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    //Xóa hình ảnh
-    private void xoaHinhAnh() {
-        String selectedIngredient = (String) spNguyenLieu.getSelectedItem();
-        // Tạo dialog xác nhận trước khi xóa
-        new AlertDialog.Builder(this)
-                .setTitle("Xác nhận xóa")
-                .setMessage("Bạn có chắc chắn muốn xóa hình ảnh nguyên liệu "+selectedIngredient+" không?")
-                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (selectedIngredient != null) {
-                            int idNguyenLieu = 0;
-                            for (Ingredient ingredient : qlnl.getAllIngredient()) {
-                                if (ingredient.getName().equalsIgnoreCase(selectedIngredient)) {
-                                    idNguyenLieu = ingredient.getId();
-                                    break;
-                                }
-                            }
-                            if (idNguyenLieu > 0) {
-                                boolean isDeleted = qlnl.deleteIngredientImage(idNguyenLieu);
-                                if (isDeleted) {
-                                    imgNguyenLieu.setImageDrawable(null);
-                                    Toast.makeText(HinhAnh.this, "Xóa hình ảnh thành công!", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(HinhAnh.this, "Xóa hình ảnh thất bại!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }else{
-                            Toast.makeText(HinhAnh.this, "Vui lòng chọn nguyên liệu trước khi xóa!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Nếu người dùng chọn "Không", không làm gì cả
-                        dialog.dismiss();
-                    }
-                })
-                .setCancelable(false) // Không cho phép đóng dialog ngoài thao tác với nút
-                .show();
     }
 }

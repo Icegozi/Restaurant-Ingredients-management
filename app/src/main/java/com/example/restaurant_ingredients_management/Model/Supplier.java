@@ -50,7 +50,7 @@ public class Supplier {
     @Override
     public String toString() {
         return
-                "Tên nhà cung cấp: '" + name + '\n' +
+                "Tên nhà cung cấp: " + name + '\n' +
                 "Thông tin liên hệ: " + contactInfo + '\n' +
                 "Địa chỉ: " + address + '\n';
     }

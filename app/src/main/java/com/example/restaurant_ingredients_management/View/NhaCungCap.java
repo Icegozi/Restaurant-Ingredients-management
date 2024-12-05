@@ -79,7 +79,7 @@ public class NhaCungCap extends AppCompatActivity {
                 String tenNcc = edt_ncc.getText().toString().trim();
                 String ttLienhe = edt_tt_lienhe.getText().toString().trim();
                 String diaChi  = edt_dia_chi.getText().toString().trim();
-                if(XuLyNhap() == true)
+                if(XuLyNhap() == true && CheckSupplier(tenNcc) == true)
                 {
                     NewSupplier(tenNcc, ttLienhe, diaChi);
                 }
@@ -280,5 +280,22 @@ public class NhaCungCap extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+    //Kiem tra nha cung cap có bi trùng không
+    public boolean CheckSupplier(String Name)
+    {
+        ArrayList <Supplier> listSup = null;
+        listSup = supplierController.getAllSuppliers();
+        int dem = 0;
+        for(int i = 0; i < listSup.size(); i++)
+        {
+            if(Name.equals(listSup.get(i).getName()))
+            {
+                Toast.makeText(this, "Trùng tên nhà cung cấp, vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+                dem++;
+            }
+        }
+        if(dem > 0) return false;
+        else return true;
     }
 }

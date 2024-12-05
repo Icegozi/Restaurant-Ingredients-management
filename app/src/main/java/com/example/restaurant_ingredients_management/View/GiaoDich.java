@@ -1,17 +1,16 @@
 package com.example.restaurant_ingredients_management.View;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -23,6 +22,7 @@ import android.widget.ViewSwitcher;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -31,11 +31,13 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.restaurant_ingredients_management.Controller.QuanLyGiaoDIchController;
 import com.example.restaurant_ingredients_management.Controller.QuanLyNguyenLieuController;
 import com.example.restaurant_ingredients_management.Controller.QuanLyNhaCungCapController;
+import com.example.restaurant_ingredients_management.Fragment.TransactionAdapter;
 import com.example.restaurant_ingredients_management.MainActivity;
 import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.Model.Transaction;
 import com.example.restaurant_ingredients_management.R;
+import com.example.restaurant_ingredients_management.Controller.QuanLyNhaCC_NguyenLieuController;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -55,6 +57,8 @@ public class GiaoDich extends AppCompatActivity {
     QuanLyGiaoDIchController giaoDichController;
     QuanLyNhaCungCapController supplierController;
     QuanLyNguyenLieuController ingredientController;
+    QuanLyNhaCC_NguyenLieuController ingredientSupplierController;
+
     ArrayList<String> listTenNguyenLieu;
     ArrayList<String> listTenNhanCC;
     List<Ingredient> listIngredients;
@@ -65,7 +69,7 @@ public class GiaoDich extends AppCompatActivity {
     ImageButton btn_lich_ngaythang_gd, btn_tk_giaodich;
     ListView lv_giaodich;
     ArrayList<Transaction> allTransactions = new ArrayList<>();
-    ArrayAdapter<Transaction> transactionAdapter;
+    TransactionAdapter transactionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,8 @@ public class GiaoDich extends AppCompatActivity {
         giaoDichController = new QuanLyGiaoDIchController(this);
         ingredientController = new QuanLyNguyenLieuController(this);
         supplierController = new QuanLyNhaCungCapController(this);
+        ingredientSupplierController = new QuanLyNhaCC_NguyenLieuController(this);
+
 
         loadNguyenLieu();
         loadNhaCungCap();
@@ -139,7 +145,8 @@ public class GiaoDich extends AppCompatActivity {
         btn_tk_giaodich = findViewById(R.id.btn_timkiem_gd);
         lv_giaodich = findViewById(R.id.lv_giaodich);
         allTransactions = giaoDichController.getAllTransactions();
-        transactionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allTransactions);
+        listIngredients = ingredientController.getAllIngredient();
+        transactionAdapter = new TransactionAdapter(this, allTransactions, listIngredients);
         lv_giaodich.setAdapter(transactionAdapter);
 
         btn_lich_ngaythang_gd.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +159,14 @@ public class GiaoDich extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 TimKiemGiaoDich();
+            }
+        });
+        //longclick listview
+        lv_giaodich.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                showDeleteConfirmation(i);
+                return true;
             }
         });
     }
@@ -211,7 +226,7 @@ public class GiaoDich extends AppCompatActivity {
         if(idRadioCheck == R.id.rd_nhap){ transactionType = "Nhập";}
         else{ transactionType = "Xuất";}
         //kiem tra cac truong nhap lieu
-        if( XuLyNhap(ingredientName, unit, supplierName, quantityStr, note, transactionDate, transactionType)) {
+        if( XuLyNhap(ingredientName, unit, supplierName, quantityStr, note, transactionDate, transactionType) == true && KiemTraNhaCC(supplierName, ingredientName) == true) {
             // Lấy ID nguyên liệu từ tên
             int ingredientId = LayIDNguyenLieu(ingredientName);
             //Chuyen doi thong tin giao dich sang dung dinh dang
@@ -230,13 +245,16 @@ public class GiaoDich extends AppCompatActivity {
             if (success > 0) {
                 Toast.makeText(getApplicationContext(), "Giao dịch đã được thêm", Toast.LENGTH_SHORT).show();
                 CapNhatSoLuongNguyenLieu(ingredientId, quantity, transactionType);
+                //tính tổng tiền
+                int supplierId = supplierController.getSupplierByName(supplierName).getId();
             } else {
                 Toast.makeText(getApplicationContext(), "Thêm giao dịch không thành công!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             //hien thi o phan lich su giao dich
-            transactionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, giaoDichController.getAllTransactions());
+            transactionAdapter = new TransactionAdapter(this, giaoDichController.getAllTransactions(), ingredientController.getAllIngredient());
+//                    new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, giaoDichController.getAllTransactions());
             lv_giaodich.setAdapter(transactionAdapter);
             transactionAdapter.notifyDataSetChanged();
         }
@@ -339,6 +357,11 @@ public class GiaoDich extends AppCompatActivity {
     public boolean XuLyNhap(String ingredientName, String unit, String supplierName, String quantityStr, String note
             , String transactionDate, String transactionType)
     {
+        //so sanh ten nha cung cap
+//        List <IngredientSupplier> danhSachNCCTheoNL = ingredientController.getSuppliersByIngredientId()
+//        int dem = 0;
+//        for(int i = 0; i < danhSachNCCTheoNL.size(); i++)
+
         int idRadioCheck = rd_nhap_xuat.getCheckedRadioButtonId(); // Kiểm tra xem là nhập hay xuất
         if(idRadioCheck == R.id.rd_nhap){ transactionType = "Nhập";}
         else{ transactionType = "Xuất";}
@@ -423,19 +446,20 @@ public class GiaoDich extends AppCompatActivity {
         return 0; // Trả về 0 nếu ngày không hợp lệ
     }
     // Phan lich su giao dich
-// Hàm chọn ngày tháng và cập nhật vào EditText
+
     private void ChonNgayThangTimKiem() {
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH); // Tháng từ 0 đến 11
         int year = calendar.get(Calendar.YEAR);
 
         // Tạo DatePickerDialog để chọn ngày
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
-                    // Khi người dùng chọn ngày, hiển thị trong EditText
-                    edt_tk_ngaythang.setText(selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear);
+                    // Tháng trong DatePicker là từ 0-11, nên cần cộng thêm 1 để hiển thị đúng
+                    String formattedDate = String.format("%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear);
+                    edt_tk_ngaythang.setText(formattedDate);
                 },
                 year, month, day
         );
@@ -448,15 +472,83 @@ public class GiaoDich extends AppCompatActivity {
 
         // Kiểm tra nếu ngày tháng không trống, lọc giao dịch theo ngày
         if (!selectedDate.isEmpty()) {
-            transactionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, giaoDichController.searchTransactionsByDate(selectedDate));
+            transactionAdapter = new TransactionAdapter(this, giaoDichController.searchTransactionsByDate(selectedDate), ingredientController.getAllIngredient());
+//                    new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, giaoDichController.searchTransactionsByDate(selectedDate));
             lv_giaodich.setAdapter(transactionAdapter);
 
         } else {
             // Nếu ngày tháng trống, hiển thị tất cả giao dịch
-            transactionAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allTransactions);
+            transactionAdapter = new TransactionAdapter(this, giaoDichController.getAllTransactions(), ingredientController.getAllIngredient());
+//                    new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allTransactions);
             lv_giaodich.setAdapter(transactionAdapter);
         }
     }
+    //xư ly longclick listview giao dich
+    public void showDeleteConfirmation(final int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Xóa giao dịch")
+                .setMessage("Bạn có muốn xóa giao dịch này không?")
+                .setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Lấy giao dịch tại vị trí cần xóa
+                        Transaction tran = allTransactions.get(position);
+                        //cap nhat lai so luong nguyen lieu sau khi xoa
+                        UpdateAfterDeleteTransaction(tran.getIngredientId(), tran.getTransactionType(), tran.getQuantity());
+                        // Gọi phương thức xóa giao dịch từ controller
+                        giaoDichController.deleteTransaction(tran.getId());
+                        // Xóa giao dịch trong danh sách
+                        allTransactions.remove(position);
+                        // Cập nhật lại ListView
+                        transactionAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+    public void UpdateAfterDeleteTransaction(int id, String type, double soLuongGD) {
+        double newQuantity;
+        listIngredients = ingredientController.getAllIngredient();
+        Ingredient ingre = new Ingredient();
+        for (int i = 0; i < listIngredients.size(); i++) {
+            if (id == listIngredients.get(i).getId()) {
+                ingre = ingredientController.getIngredientById(id);
+                if (type.equals("Nhập")) {
+                    newQuantity = ingre.getQuantity() - soLuongGD;
+                } else newQuantity = ingre.getQuantity() + soLuongGD;
+                ingre.setQuantity(newQuantity);
+                if (ingre.getId() == listIngredients.get(i).getId()) {
+                    ingredientController.updateIngredient(ingre);
+                }
+            }
+        }
 
+    }
+    public boolean KiemTraNhaCC(String SupplierName, String ingredientName)
+    {
+        int ingredientId = ingredientController.getIdByNameIngredient(ingredientName);
+        List <Supplier> danhSachNCCTheoNL = ingredientController.getSuppliersByIngredientId(ingredientId);
+        int dem = 0;
+        for(int i = 0; i < danhSachNCCTheoNL.size(); i++)
+        {
+            if(SupplierName.equals(danhSachNCCTheoNL.get(i).getName())) dem++;
+        }
+        if(dem == 0)
+        {
+            Toast.makeText(this, "Không tìm thấy nhà cung cấp của nguyên liêu!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        else return true;
+    }
+
+    public double TinhTongTien(int ingredientId, int supplierId, double soluong)
+    {
+        String quantityStr = edt_soluong.getText().toString();
+        double quantity = Double.parseDouble(quantityStr);
+        double giaTien = ingredientSupplierController.getPriceBySupplierAndIngredient(supplierId, ingredientId);
+        double tongTien  = quantity*giaTien;
+        Toast.makeText(this, "Tong tien la: " + tongTien, Toast.LENGTH_LONG).show();
+        return tongTien;
+    }
 
 }

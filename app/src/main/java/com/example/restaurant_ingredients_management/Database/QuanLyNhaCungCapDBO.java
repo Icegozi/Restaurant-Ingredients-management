@@ -118,6 +118,38 @@ public class QuanLyNhaCungCapDBO {
         String[] whereArgs = { String.valueOf(id) };
         return db.delete(CreateDatabase.TABLE_SUPPLIERS, whereClause, whereArgs);
     }
+    public Supplier getSupplierByName(String name) {
+        Supplier supplier = null;
+        Cursor cursor = null;
+
+        try {
+            // Mở kết nối cơ sở dữ liệu
+            open();
+
+            // Truy vấn cơ sở dữ liệu
+            String query = "SELECT * FROM " + CreateDatabase.TABLE_SUPPLIERS + " WHERE " + CreateDatabase.COLUMN_SUPPLIER_NAME + " = ?";
+            cursor = db.rawQuery(query, new String[]{name});
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ID));
+                String contactInfo = cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_CONTACT_INFO));
+                String address = cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ADDRESS));
+
+                supplier = new Supplier(id, name, contactInfo, address);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Xử lý lỗi nếu có
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            // Đóng kết nối cơ sở dữ liệu
+            close();
+        }
+
+        return supplier;
+    }
+
 
 
 }

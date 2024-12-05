@@ -12,6 +12,8 @@ import com.example.restaurant_ingredients_management.Model.Ingredient;
 import com.example.restaurant_ingredients_management.Model.IngredientSupplier;
 import com.example.restaurant_ingredients_management.Model.Supplier;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,27 +171,27 @@ public class QuanLyNguyenLieuDBO {
     }
 
     // Lấy danh sách nhà cung cấp cho một nguyên liệu
-    public List<IngredientSupplier> getSuppliersByIngredientId(int ingredientId) {
-        List<IngredientSupplier> suppliers = new ArrayList<>();
-        String selection = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(ingredientId)};
-        Cursor cursor = db.query(CreateDatabase.TABLE_INGREDIENT_SUPPLIERS, null, selection, selectionArgs, null, null, null);
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                IngredientSupplier supplier = new IngredientSupplier(
-                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_ID)),
-                        cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ID)),
-                        cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT)),
-                        cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLY_DATE))
-                );
-                suppliers.add(supplier);
-            }
-            cursor.close();
-        }
-        return suppliers;
-    }
+//    public List<IngredientSupplier> getSuppliersByIngredientId(int ingredientId) {
+//        List<IngredientSupplier> suppliers = new ArrayList<>();
+//        String selection = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
+//        String[] selectionArgs = {String.valueOf(ingredientId)};
+//        Cursor cursor = db.query(CreateDatabase.TABLE_INGREDIENT_SUPPLIERS, null, selection, selectionArgs, null, null, null);
+//
+//        if (cursor != null) {
+//            while (cursor.moveToNext()) {
+//                IngredientSupplier supplier = new IngredientSupplier(
+//                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+//                        cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_ID)),
+//                        cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_SUPPLIER_ID)),
+//                        cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT)),
+//                        cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLY_DATE))
+//                );
+//                suppliers.add(supplier);
+//            }
+//            cursor.close();
+//        }
+//        return suppliers;
+//    }
 
 
     public int updateIngredientPrice(int ingredientId, int supplierId, double newPrice) {
@@ -286,13 +288,71 @@ public class QuanLyNguyenLieuDBO {
         return imageData; // Trả về dữ liệu ảnh (hoặc null nếu không tìm thấy)
     }
 
-    public boolean deleteImageById(int ingredientId) {
-        ContentValues values = new ContentValues();
-        String whereClause = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
-        String[] whereArgs = {String.valueOf(ingredientId)};
-        values.put(CreateDatabase.COLUMN_INGREDIENT_IMAGE, (byte[]) null);
-        int rowsAffected = db.update(CreateDatabase.TABLE_INGREDIENTS, values, whereClause, whereArgs);
-        return rowsAffected > 0;
+    public List<Supplier> getSuppliersByIngredientId(int ingredientId) {
+        List<Supplier> suppliers = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            open();
+
+            String sql = "SELECT " + CreateDatabase.TABLE_SUPPLIERS + "." + CreateDatabase.COLUMN_SUPPLIER_ID + ", " +
+                    CreateDatabase.TABLE_SUPPLIERS + "." + CreateDatabase.COLUMN_SUPPLIER_NAME + ", " +
+                    CreateDatabase.TABLE_SUPPLIERS + "." + CreateDatabase.COLUMN_SUPPLIER_CONTACT_INFO + ", " +
+                    CreateDatabase.TABLE_SUPPLIERS + "." + CreateDatabase.COLUMN_SUPPLIER_ADDRESS +
+                    " FROM " + CreateDatabase.TABLE_SUPPLIERS +
+                    " JOIN " + CreateDatabase.TABLE_INGREDIENT_SUPPLIERS +
+                    " ON " + CreateDatabase.TABLE_SUPPLIERS + "." + CreateDatabase.COLUMN_SUPPLIER_ID + " = " +
+                    CreateDatabase.TABLE_INGREDIENT_SUPPLIERS + "." + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLIER_ID +
+                    " WHERE " + CreateDatabase.TABLE_INGREDIENT_SUPPLIERS + "." + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_INGREDIENT_ID + " = ?";
+
+            cursor = db.rawQuery(sql, new String[]{String.valueOf(ingredientId)});
+
+            // Kiểm tra tên cột trong cursor
+            if (cursor != null && cursor.moveToFirst()) {
+                String[] columnNames = cursor.getColumnNames(); // Lấy danh sách tên cột trong cursor
+                for (String columnName : columnNames) {
+                    Log.d("Cursor Column", "Column Name: " + columnName); // In ra các tên cột
+                }
+
+                // Đọc kết quả từ cursor và thêm vào danh sách
+                do {
+                    Supplier supplier = new Supplier();
+                    int supplierIdIndex = cursor.getColumnIndex(CreateDatabase.COLUMN_SUPPLIER_ID);
+                    if (supplierIdIndex != -1) {
+                        supplier.setId(cursor.getInt(supplierIdIndex));
+                    }
+
+                    int nameIndex = cursor.getColumnIndex(CreateDatabase.COLUMN_SUPPLIER_NAME);
+                    if (nameIndex != -1) {
+                        supplier.setName(cursor.getString(nameIndex));
+                    }
+
+                    int contactInfoIndex = cursor.getColumnIndex(CreateDatabase.COLUMN_SUPPLIER_CONTACT_INFO);
+                    if (contactInfoIndex != -1) {
+                        supplier.setContactInfo(cursor.getString(contactInfoIndex));
+                    }
+
+                    int addressIndex = cursor.getColumnIndex(CreateDatabase.COLUMN_SUPPLIER_ADDRESS);
+                    if (addressIndex != -1) {
+                        supplier.setAddress(cursor.getString(addressIndex));
+                    }
+
+                    suppliers.add(supplier);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            close();
+        }
+
+        return suppliers;
     }
+
+
+
 
 }

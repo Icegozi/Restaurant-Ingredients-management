@@ -246,12 +246,22 @@ public class QuanLyNguyenLieuController {
             qlnlDBO.close();
         }
     }
-
-    //lấy hình ảnh theo id nguyên liệu
-    public boolean deleteIngredientImage(int idNguyenLieu) {
+    //lay nguyen lieu theo id
+    public Ingredient getIngredientById(int id)
+    {
         qlnlDBO.open();
         try {
-            return qlnlDBO.deleteImageById(idNguyenLieu);
+           return qlnlDBO.getIngredientById(id);
+        } finally {
+            qlnlDBO.close();
+        }
+    }
+    //lay danh sach nha cung cap theo id nguyen lieu
+    public List<Supplier> getSuppliersByIngredientId(int ingredientId)
+    {
+        qlnlDBO.open();
+        try {
+            return qlnlDBO.getSuppliersByIngredientId(ingredientId);
         } finally {
             qlnlDBO.close();
         }

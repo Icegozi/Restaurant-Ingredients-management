@@ -13,6 +13,8 @@ public class Transaction {
     private String unit;               // Đơn vị đo lường
     private String note;               // Ghi chú giao dịch
 
+
+
     public Transaction(int id, int ingredientId, long transactionDate, String transactionType, double quantity, String unit, String note) {
         this.id = id;
         this.ingredientId = ingredientId;
@@ -95,4 +97,5 @@ public class Transaction {
                 "Đơn vị: " + unit + '\n' +
                 "Ghi chú: " + note;
     }
+
 }
