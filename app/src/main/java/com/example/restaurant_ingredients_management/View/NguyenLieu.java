@@ -134,7 +134,7 @@ public class NguyenLieu extends AppCompatActivity {
     // Đổ dữ liệu vào spinner đơn vị
     private void donViSpinner() {
         arrayDonVi = new ArrayList<>();
-        arrayDonVi.add("Kg");
+        arrayDonVi.add("Kilogram");
         arrayDonVi.add("Gram");
         arrayDonVi.add("Lít");
         DonViAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, arrayDonVi);
@@ -143,12 +143,16 @@ public class NguyenLieu extends AppCompatActivity {
 
     // Đổ dữ liệu vào spinner nhà cung cấp
     private void nhaCungCapSpinner() {
-        arrayNhaCungCap = new ArrayList<>();
-        for (Supplier ncc : qlnl.getAllSuppliers()){
-            arrayNhaCungCap.add(ncc.getName());
+        try{
+            arrayNhaCungCap = new ArrayList<>();
+            for (Supplier ncc : qlnl.getAllSuppliers()){
+                arrayNhaCungCap.add(ncc.getName());
+            }
+            NhaCungCapAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, arrayNhaCungCap);
+            spNhaCungCap.setAdapter(NhaCungCapAdapter);
+        }catch (Exception ex){
+            Toast.makeText(this, "Không tìm thấy nhà cung cấp",Toast.LENGTH_SHORT);
         }
-        NhaCungCapAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, arrayNhaCungCap);
-        spNhaCungCap.setAdapter(NhaCungCapAdapter);
     }
 
     // Đổ dữ liệu vào listview nguyên liệu
@@ -192,21 +196,26 @@ public class NguyenLieu extends AppCompatActivity {
         btnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tenNguyenLieu = txtTenNguyenLieu.getText().toString();
-                String tenNhaCungCap = spNhaCungCap.getSelectedItem().toString();
-                if(tenNguyenLieu.isEmpty()||tenNhaCungCap.isEmpty()){
-                    Toast.makeText(view.getContext(),"Nguyên liệu và nhà cung cấp bị bỏ trống!",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                int nguyenLieuId = qlnl.getIdByNameIngredient(tenNguyenLieu);
-                int nhaCungCapId = qlnl.getSupplierIdByName(tenNhaCungCap);
-                for(IngredientSupplier ig : qlnl.getAllIngredientSuppliers()){
-                    if(ig.getIngredientId() == nguyenLieuId && ig.getSupplierId() == nhaCungCapId){
-                        txtGiaTien.setText(String.valueOf(ig.getPricePerUnit()));
+                try {
+                    String tenNguyenLieu = txtTenNguyenLieu.getText().toString();
+                    String tenNhaCungCap = spNhaCungCap.getSelectedItem().toString();
+                    if(tenNguyenLieu.isEmpty()||tenNhaCungCap.isEmpty()){
+                        Toast.makeText(view.getContext(),"Nguyên liệu và nhà cung cấp bị bỏ trống!",Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    int nguyenLieuId = qlnl.getIdByNameIngredient(tenNguyenLieu);
+                    int nhaCungCapId = qlnl.getSupplierIdByName(tenNhaCungCap);
+                    for(IngredientSupplier ig : qlnl.getAllIngredientSuppliers()){
+                        if(ig.getIngredientId() == nguyenLieuId && ig.getSupplierId() == nhaCungCapId){
+                            txtGiaTien.setText(String.valueOf(ig.getPricePerUnit()));
+                            return;
+                        }
+                    }
+                    Toast.makeText(view.getContext(),"Không tồn tại giá tiền nguyên liệu của nhà cung cấp này",Toast.LENGTH_SHORT).show();
+                }catch (Exception ex){
+
                 }
-                Toast.makeText(view.getContext(),"Không tồn tại giá tiền nguyên liệu của nhà cung cấp này",Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(),"Nhà cung cấp đã bị xóa, vui lòng thêm nhà cung cấp cho nguyên liệu.",Toast.LENGTH_SHORT);
             }
         });
         btnSua.setOnClickListener(new View.OnClickListener() {
@@ -227,9 +236,14 @@ public class NguyenLieu extends AppCompatActivity {
         lvNguyenLieu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                hienThiNguyenLieu(i);
-                position = i;
+                try {
+                    hienThiNguyenLieu(i);
+                    position = i;
+                    return;
+                }catch (Exception ex){
 
+                }
+                Toast.makeText(view.getContext(),"Nhà cung cấp đã bị xóa, vui lòng thêm nhà cung cấp cho nguyên liệu.",Toast.LENGTH_SHORT);
             }
         });
     }

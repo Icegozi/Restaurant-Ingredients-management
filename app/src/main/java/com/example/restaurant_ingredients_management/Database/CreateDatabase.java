@@ -35,6 +35,7 @@ public class CreateDatabase extends SQLiteOpenHelper {
     public static final String TABLE_TRANSACTIONS = "transactions";
     public static final String COLUMN_TRANSACTION_ID = "id";
     public static final String COLUMN_TRANSACTION_INGREDIENT_ID = "ingredientId";
+    public static final String COLUMN_TRANSACTION_SUPPLIER_ID = "supplierId";
     public static final String COLUMN_TRANSACTION_DATE = "transactionDate";
     public static final String COLUMN_TRANSACTION_TYPE = "transactionType";
     public static final String COLUMN_TRANSACTION_QUANTITY = "quantity";
@@ -90,13 +91,14 @@ public class CreateDatabase extends SQLiteOpenHelper {
         String CREATE_TABLE_TRANSACTION = "CREATE TABLE " + TABLE_TRANSACTIONS + " ("
                 + COLUMN_TRANSACTION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COLUMN_TRANSACTION_INGREDIENT_ID + " INTEGER NOT NULL, "
+                + COLUMN_TRANSACTION_SUPPLIER_ID + " INTEGER NOT NULL, "
                 + COLUMN_TRANSACTION_DATE + " INTEGER, "
                 + COLUMN_TRANSACTION_TYPE + " TEXT NOT NULL, "
                 + COLUMN_TRANSACTION_QUANTITY + " REAL NOT NULL, "
                 + COLUMN_TRANSACTION_UNIT + " TEXT, "
                 + COLUMN_TRANSACTION_NOTE + " TEXT, "
-                + "FOREIGN KEY(" + COLUMN_TRANSACTION_INGREDIENT_ID + ") REFERENCES " + TABLE_INGREDIENTS + "(" + COLUMN_INGREDIENT_ID + "))";
-        sqLiteDatabase.execSQL(CREATE_TABLE_TRANSACTION);
+                + "FOREIGN KEY(" + COLUMN_TRANSACTION_INGREDIENT_ID + ") REFERENCES " + TABLE_INGREDIENTS + "(" + COLUMN_INGREDIENT_ID + "), "
+                + "FOREIGN KEY(" + COLUMN_TRANSACTION_SUPPLIER_ID + ") REFERENCES " + TABLE_SUPPLIERS + "(" + COLUMN_SUPPLIER_ID + "))"; sqLiteDatabase.execSQL(CREATE_TABLE_TRANSACTION);
 
         // Tạo bảng Supplier
         String CREATE_TABLE_SUPPLIER = "CREATE TABLE " + TABLE_SUPPLIERS + " ("

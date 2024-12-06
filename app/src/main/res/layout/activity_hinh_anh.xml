@@ -31,15 +31,34 @@
             android:background="#F5F5F5"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btnThemAnh"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:backgroundTint="@color/resolved_background"
-        app:srcCompat="@drawable/baseline_add_24" />
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnThemAnh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:backgroundTint="@color/resolved_background"
+            app:srcCompat="@drawable/baseline_add_24" />
+
+        <ImageButton
+            android:id="@+id/btnXoaAnh"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="5dp"
+            android:backgroundTint="@color/resolved_background"
+            app:srcCompat="@drawable/baseline_delete_24" />
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imgNguyenLieu"

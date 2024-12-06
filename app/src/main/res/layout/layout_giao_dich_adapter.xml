@@ -2,75 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/unresolved_background"
+    android:backgroundTint="@color/unresolved_background"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:backgroundTint="@color/white">
+    android:padding="10dp">
 
     <!-- Tên nguyên liệu và tổng tiền -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/txtIngredientName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
             android:layout_weight="1"
+            android:fontFamily="monospace"
             android:text="Ingredient Name"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtTotalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="monospace"
             android:text="1000"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iconDollar"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_dollar"
-            android:layout_gravity="center_vertical"/>
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_dollar" />
+
     </LinearLayout>
 
     <!-- Kiểu giao dịch, số lượng, đơn vị đo -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/txtTransactionType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="monospace"
             android:text="Purchase"
-            android:textSize="14sp"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txtQuantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="monospace"
             android:text="10"
-            android:textSize="14sp"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/txtUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="monospace"
             android:text="kg"
-            android:textSize="14sp"
-            android:layout_gravity="center_vertical"/>
+            android:textSize="12sp" />
     </LinearLayout>
 
     <!-- Ghi chú -->
@@ -78,16 +84,17 @@
         android:id="@+id/txtNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="monospace"
         android:text="Note here"
-        android:textSize="14sp"
-        android:paddingBottom="5dp"/>
+        android:textSize="12sp" />
 
     <!-- Ngày tháng giao dịch -->
     <TextView
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="monospace"
         android:text="2024-12-04"
-        android:textSize="14sp"/>
+        android:textSize="12sp" />
 
 </LinearLayout>

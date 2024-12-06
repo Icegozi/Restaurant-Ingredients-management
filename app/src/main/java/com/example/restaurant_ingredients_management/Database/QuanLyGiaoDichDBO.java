@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.restaurant_ingredients_management.Model.Transaction;
@@ -48,6 +49,7 @@ public class QuanLyGiaoDichDBO {
                     Transaction transaction = new Transaction();
                     transaction.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_ID)));
                     transaction.setIngredientId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID)));
+                    transaction.setSupplierId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_SUPPLIER_ID)));
                     transaction.setTransactionDate(cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_DATE)));
                     transaction.setTransactionType(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_TYPE)));
                     transaction.setQuantity(cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_QUANTITY)));
@@ -72,6 +74,7 @@ public class QuanLyGiaoDichDBO {
         if (cursor != null && cursor.moveToFirst()) {
             transaction = new Transaction();
             transaction.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_ID)));
+            transaction.setIngredientId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_SUPPLIER_ID)));
             transaction.setIngredientId(cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID)));
             transaction.setTransactionDate(cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_DATE)));
             transaction.setTransactionType(cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_TYPE)));
@@ -87,6 +90,7 @@ public class QuanLyGiaoDichDBO {
     public int updateTransaction(Transaction transaction) {
         ContentValues values = new ContentValues();
         values.put(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID, transaction.getIngredientId());
+        values.put(CreateDatabase.COLUMN_TRANSACTION_SUPPLIER_ID, transaction.getSupplierId());
         values.put(CreateDatabase.COLUMN_TRANSACTION_DATE, transaction.getTransactionDate());
         values.put(CreateDatabase.COLUMN_TRANSACTION_TYPE, transaction.getTransactionType());
         values.put(CreateDatabase.COLUMN_TRANSACTION_QUANTITY, transaction.getQuantity());
@@ -98,12 +102,38 @@ public class QuanLyGiaoDichDBO {
         return db.update(CreateDatabase.TABLE_TRANSACTIONS, values, whereClause, whereArgs);
     }
 
-    // Xóa một giao dịch
     public int deleteTransaction(int id) {
-        String whereClause = CreateDatabase.COLUMN_TRANSACTION_ID + " = ?";
-        String[] whereArgs = { String.valueOf(id) };
-        return db.delete(CreateDatabase.TABLE_TRANSACTIONS, whereClause, whereArgs);
+        Transaction transaction = getTransactionById(id);
+        if (transaction != null) {
+            // Cập nhật số lượng nguyên liệu trước khi xóa
+            capNhatSoLuongNguyenLieuKhiXoa(transaction);
+            String whereClause = CreateDatabase.COLUMN_TRANSACTION_ID + " = ?"; String[] whereArgs = { String.valueOf(id) };
+            return db.delete(CreateDatabase.TABLE_TRANSACTIONS, whereClause, whereArgs);
+        }
+        return 0;
     }
+
+    private void capNhatSoLuongNguyenLieuKhiXoa(Transaction transaction) {
+        String transactionType = transaction.getTransactionType();
+        double quantity = transaction.getQuantity();
+        int ingredientId = transaction.getIngredientId();
+        if (transactionType.equals("Nhập")) {
+            // Trường hợp nhập: trừ đi số lượng đã nhập
+            capNhatSoLuongNguyenLieu(ingredientId, -quantity);
+        } else if (transactionType.equals("Xuất")) {
+            // Trường hợp xuất: cộng lại số lượng đã xuất
+            capNhatSoLuongNguyenLieu(ingredientId, quantity);
+        }
+    }
+
+    private void capNhatSoLuongNguyenLieu(int ingredientId, double quantity) {
+        String query = "UPDATE " + CreateDatabase.TABLE_INGREDIENTS + " SET "
+                + CreateDatabase.COLUMN_INGREDIENT_QUANTITY + " = "
+                + CreateDatabase.COLUMN_INGREDIENT_QUANTITY + " + ? WHERE "
+                + CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
+        db.execSQL(query, new Object[]{quantity, ingredientId});
+    }
+
     // Lấy danh sách tất cả tên nguyên liệu
     public ArrayList<String> getAllIngredientNames() {
         ArrayList<String> ingredientNames = new ArrayList<>();
@@ -148,29 +178,7 @@ public class QuanLyGiaoDichDBO {
         }
         return -1; // Nếu không tìm thấy nguyên liệu, trả về -1
     }
-    // Cập nhật số lượng nguyên liệu trong kho
-    public void capNhatSoLuongNguyenLieu(int ingredientId, double quantity, String transactionType) {
-        // Truy vấn để lấy số lượng nguyên liệu hiện tại
-        Cursor cursor = db.query(CreateDatabase.TABLE_INGREDIENTS, new String[]{CreateDatabase.COLUMN_INGREDIENT_QUANTITY, CreateDatabase.COLUMN_INGREDIENT_NAME},
-                CreateDatabase.COLUMN_INGREDIENT_ID + "=?", new String[]{String.valueOf(ingredientId)}, null, null, null);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            double currentQuantity = cursor.getDouble(0); // Số lượng hiện tại của nguyên liệu
-            String ingredientName = cursor.getString(1); // Tên nguyên liệu
-            cursor.close();
-
-            // Tính số lượng mới dựa trên loại giao dịch (input hoặc output)
-            double newQuantity = transactionType.equals("input") ? currentQuantity + quantity : currentQuantity - quantity;
-
-            // Cập nhật lại số lượng trong bảng
-            ContentValues values = new ContentValues();
-            values.put(CreateDatabase.COLUMN_INGREDIENT_QUANTITY, newQuantity);
-            db.update(CreateDatabase.TABLE_INGREDIENTS, values, CreateDatabase.COLUMN_INGREDIENT_ID + "=?", new String[]{String.valueOf(ingredientId)});
-
-            // Hiển thị thông báo
-            System.out.println("Số lượng của nguyên liệu " + ingredientName + " còn " + currentQuantity + " +(-) " + quantity + " = " + newQuantity);
-        }
-    }
     //tim kiem giao dich theo ngay
     public ArrayList<Transaction> searchTransactionsByDate(String date) {
         ArrayList<Transaction> transactions = new ArrayList<>();
@@ -193,6 +201,7 @@ public class QuanLyGiaoDichDBO {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_ID));
+                int supplierId = cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_SUPPLIER_ID));
                 int ingredientId = cursor.getInt(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID));
                 long transactionDateLong = cursor.getLong(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_DATE));
                 String transactionType = cursor.getString(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_TRANSACTION_TYPE));
@@ -207,7 +216,7 @@ public class QuanLyGiaoDichDBO {
                 // So sánh ngày đã định dạng với ngày nhập từ người dùng
                 if (formattedDate.equals(date)) {
                     // Tạo đối tượng Transaction và thêm vào danh sách
-                    Transaction transaction = new Transaction(id, ingredientId, transactionDateLong, transactionType, quantity, unit, note);
+                    Transaction transaction = new Transaction(id,supplierId, ingredientId, transactionDateLong, transactionType, quantity, unit, note);
                     transactions.add(transaction);
                 }
             }
@@ -242,12 +251,14 @@ public class QuanLyGiaoDichDBO {
         // Thêm giao dịch vào bảng Transactions
         ContentValues values = new ContentValues();
         values.put(CreateDatabase.COLUMN_TRANSACTION_INGREDIENT_ID, transaction.getIngredientId());
+        values.put(CreateDatabase.COLUMN_TRANSACTION_SUPPLIER_ID, transaction.getSupplierId());
         values.put(CreateDatabase.COLUMN_TRANSACTION_DATE, transaction.getTransactionDate());
         values.put(CreateDatabase.COLUMN_TRANSACTION_TYPE, transaction.getTransactionType());
         values.put(CreateDatabase.COLUMN_TRANSACTION_QUANTITY, transaction.getQuantity());
         values.put(CreateDatabase.COLUMN_TRANSACTION_UNIT, transaction.getUnit());
         values.put(CreateDatabase.COLUMN_TRANSACTION_NOTE, transaction.getNote());
 
+        Log.d("QuanLyGiaoDichDBO", "Adding Transaction: ingredientId=" + transaction.getIngredientId() + ", supplierId=" + transaction.getSupplierId());
         return db.insert(CreateDatabase.TABLE_TRANSACTIONS, null, values); // Thêm giao dịch
     }
     //ham cap nhat so luong cua 1 nguyen lieu theo id
@@ -271,4 +282,27 @@ public class QuanLyGiaoDichDBO {
     }
 
 
+    // Lấy giá cả nguyên liệu theo ID nguyên liệu và nhà cung cấp
+    public double layGiaCaNguyenLieu(int ingredientId, int supplierId) {
+        double price = -1;
+        String query = "SELECT " + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT
+                + " FROM " + CreateDatabase.TABLE_INGREDIENT_SUPPLIERS
+                + " WHERE " + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_INGREDIENT_ID + " = ?"
+                + " AND " + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLIER_ID + " = ?";
+        // Sử dụng Log.d để ghi log
+        Log.d("QuanLyGiaoDichDBO", "Query: " + query);
+        Log.d("QuanLyGiaoDichDBO", "Params: ingredientId = " + ingredientId + ", supplierId = ");
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(ingredientId), String.valueOf(supplierId)});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                price = cursor.getDouble(cursor.getColumnIndexOrThrow(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT));
+                Log.d("QuanLyGiaoDichDBO", "Price found: " + price);
+            } else {
+                Log.d("QuanLyGiaoDichDBO", "No price found for given ingredientId and supplierId.");
+            }
+            cursor.close();
+        } else { Log.d("QuanLyGiaoDichDBO", "Cursor is null or query did not return any results.");
+        }
+        return price;
+    }
 }

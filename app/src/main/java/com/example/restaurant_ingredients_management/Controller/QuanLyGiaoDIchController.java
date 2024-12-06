@@ -43,10 +43,12 @@ public class QuanLyGiaoDIchController {
     public void close() {
         transactionDBO.close();
     }
+
     //lay tat ca ten nha cung cap
     public ArrayList<String> getAllSupplierNames(){
         return transactionDBO.getAllSupplierNames();
     }
+
     //lay tat ca ten nguyen lieu
     public ArrayList<String> getAllIngredientNames(){
         return transactionDBO.getAllIngredientNames();
@@ -55,9 +57,7 @@ public class QuanLyGiaoDIchController {
     public int LayIdNguyenLieu(String name){
         return transactionDBO.layIdNguyenLieu(name);
     }
-    public void CapNhapSoLuongNguyenLieu(int ingredientId, double quantity, String transactionType){
-        transactionDBO.capNhatSoLuongNguyenLieu(ingredientId, quantity, transactionType);
-    }
+
     public ArrayList<Transaction> searchTransactionsByDate(String date)
     {
         return transactionDBO.searchTransactionsByDate(date);
@@ -70,6 +70,12 @@ public class QuanLyGiaoDIchController {
     {
         return transactionDBO.updateIngredientQuantityById(ingredientId, newQuantity);
     }
-    //lấy giá cả nguyên liệu theo id nhà cung cấp và nguyên liệu
+
+    // Lấy giá cả nguyên liệu theo ID nhà cung cấp và nguyên liệu
+    public double layGiaCaNguyenLieu(int ingredientId, int supplierId) {
+        return transactionDBO.layGiaCaNguyenLieu(ingredientId, supplierId);
+    }
+
+
 
 }

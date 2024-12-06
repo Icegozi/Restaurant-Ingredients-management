@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class Transaction {
     private int id;                    // ID giao dịch (Primary Key)
+    private int supplierId;
     private int ingredientId;          // ID của nguyên liệu liên quan
     private long transactionDate;      // Ngày giao dịch
     private String transactionType;    // Loại giao dịch ("input" hoặc "output")
@@ -15,14 +16,23 @@ public class Transaction {
 
 
 
-    public Transaction(int id, int ingredientId, long transactionDate, String transactionType, double quantity, String unit, String note) {
+    public Transaction(int id,int supplierId, int ingredientId, long transactionDate, String transactionType, double quantity, String unit, String note) {
         this.id = id;
+        this.supplierId = supplierId;
         this.ingredientId = ingredientId;
         this.transactionDate = transactionDate;
         this.transactionType = transactionType;
         this.quantity = quantity;
         this.unit = unit;
         this.note = note;
+    }
+
+    public int getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
     public Transaction() {
