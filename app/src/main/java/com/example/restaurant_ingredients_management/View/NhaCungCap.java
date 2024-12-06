@@ -23,6 +23,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.restaurant_ingredients_management.Controller.QuanLyNhaCungCapController;
+import com.example.restaurant_ingredients_management.Fragment.SupplierAdapter;
 import com.example.restaurant_ingredients_management.MainActivity;
 import com.example.restaurant_ingredients_management.Model.Supplier;
 import com.example.restaurant_ingredients_management.R;
@@ -60,7 +61,7 @@ public class NhaCungCap extends AppCompatActivity {
 
         //Khởi tạo Controller và Adapter
         supplierController = new QuanLyNhaCungCapController(this);
-        supplierAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, supplierController.getAllSuppliers());
+        supplierAdapter = new SupplierAdapter(this,supplierController.getAllSuppliers());
         lv_ncc.setAdapter(supplierAdapter);
 
         //khi chon 1 listview
@@ -215,9 +216,8 @@ public class NhaCungCap extends AppCompatActivity {
 
     }
     private void capNhatDanhSachNhaCungCap() {
-        ArrayList<Supplier> suppliers = supplierController.getAllSuppliers(); // Lấy danh sách từ DB
-        ArrayAdapter<Supplier> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, suppliers);
-        lv_ncc.setAdapter(adapter);
+        supplierAdapter = new SupplierAdapter(this,supplierController.getAllSuppliers());
+        lv_ncc.setAdapter(supplierAdapter);
         // Cập nhật ListView
         supplierAdapter.notifyDataSetChanged();
     }
