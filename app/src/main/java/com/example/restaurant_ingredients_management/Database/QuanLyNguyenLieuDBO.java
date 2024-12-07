@@ -194,6 +194,7 @@ public class QuanLyNguyenLieuDBO {
 //    }
 
 
+    //Hàm Cập nhật giá tiền 1 đơn vị của nguyên liệu
     public int updateIngredientPrice(int ingredientId, int supplierId, double newPrice) {
         ContentValues values = new ContentValues();
         values.put(CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_PRICE_PER_UNIT, newPrice);
@@ -353,6 +354,7 @@ public class QuanLyNguyenLieuDBO {
     }
 
 
+    //Xóa hình ảnh theo id nguyên liệu
     public boolean deleteImageById(int ingredientId) {
         ContentValues values = new ContentValues();
         String whereClause = CreateDatabase.COLUMN_INGREDIENT_ID + " = ?";
@@ -361,5 +363,7 @@ public class QuanLyNguyenLieuDBO {
         int rowsAffected = db.update(CreateDatabase.TABLE_INGREDIENTS, values, whereClause, whereArgs);
         return rowsAffected > 0;
     }
+
+
 
 }

@@ -33,11 +33,13 @@ public class QuanLyGiaoDIchController {
         return transactionDBO.deleteTransaction(transactionId);
     }
 
+    public void capNhatSoLuongNguyenLieuSauKhiXoa(Transaction transaction){
+        transactionDBO.capNhatSoLuongNguyenLieuKhiXoa(transaction);
+    }
     // Lấy danh sách tất cả các giao dịch
     public ArrayList<Transaction> getAllTransactions() {
         return transactionDBO.getAllTransactions();
     }
-
 
     // Đóng kết nối cơ sở dữ liệu
     public void close() {
@@ -53,6 +55,7 @@ public class QuanLyGiaoDIchController {
     public ArrayList<String> getAllIngredientNames(){
         return transactionDBO.getAllIngredientNames();
     }
+
     //tim kiem id theo ten nguyen lieu
     public int LayIdNguyenLieu(String name){
         return transactionDBO.layIdNguyenLieu(name);
@@ -62,10 +65,12 @@ public class QuanLyGiaoDIchController {
     {
         return transactionDBO.searchTransactionsByDate(date);
     }
+
     public int LaySoLuongTrongKho(int ingredientId)
     {
         return transactionDBO.getCurrentIngredientQuantity(ingredientId);
     }
+
     public boolean updateIngredientQuantityById(int ingredientId, double newQuantity)
     {
         return transactionDBO.updateIngredientQuantityById(ingredientId, newQuantity);

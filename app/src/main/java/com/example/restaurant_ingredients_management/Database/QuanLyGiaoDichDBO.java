@@ -106,14 +106,15 @@ public class QuanLyGiaoDichDBO {
         Transaction transaction = getTransactionById(id);
         if (transaction != null) {
             // Cập nhật số lượng nguyên liệu trước khi xóa
-            capNhatSoLuongNguyenLieuKhiXoa(transaction);
+//            capNhatSoLuongNguyenLieuKhiXoa(transaction);
             String whereClause = CreateDatabase.COLUMN_TRANSACTION_ID + " = ?"; String[] whereArgs = { String.valueOf(id) };
             return db.delete(CreateDatabase.TABLE_TRANSACTIONS, whereClause, whereArgs);
         }
         return 0;
     }
 
-    private void capNhatSoLuongNguyenLieuKhiXoa(Transaction transaction) {
+    //Cập nhật số lượng nguyên liệu trước khi xóa
+    public void capNhatSoLuongNguyenLieuKhiXoa(Transaction transaction) {
         String transactionType = transaction.getTransactionType();
         double quantity = transaction.getQuantity();
         int ingredientId = transaction.getIngredientId();
@@ -126,6 +127,7 @@ public class QuanLyGiaoDichDBO {
         }
     }
 
+    //Cập nhật số lượng nguyên liệu theo id
     private void capNhatSoLuongNguyenLieu(int ingredientId, double quantity) {
         String query = "UPDATE " + CreateDatabase.TABLE_INGREDIENTS + " SET "
                 + CreateDatabase.COLUMN_INGREDIENT_QUANTITY + " = "
@@ -265,10 +267,11 @@ public class QuanLyGiaoDichDBO {
     public boolean updateIngredientQuantityById(int ingredientId, double newQuantity) {
         // Lấy SQLiteDatabase để thực hiện truy vấn
         SQLiteDatabase db = this.dbHelper.getWritableDatabase();  // Dùng phương thức này để có quyền ghi vào DB
-
+        boolean isLowStock  = newQuantity < 10 ? true : false;
         // Tạo ContentValues để chứa các giá trị cần cập nhật
         ContentValues contentValues = new ContentValues();
         contentValues.put(CreateDatabase.COLUMN_INGREDIENT_QUANTITY, newQuantity); // Cập nhật số lượng mới
+        contentValues.put(CreateDatabase.COLUMN_INGREDIENT_IS_LOW_STOCK, isLowStock ? 1 : 0); // Cập nhật trạng thái
 
         // Thực hiện cập nhật, truyền vào điều kiện WHERE để chỉ cập nhật bản ghi có id tương ứng
         int rowsAffected = db.update(CreateDatabase.TABLE_INGREDIENTS, contentValues,
@@ -289,9 +292,7 @@ public class QuanLyGiaoDichDBO {
                 + " FROM " + CreateDatabase.TABLE_INGREDIENT_SUPPLIERS
                 + " WHERE " + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_INGREDIENT_ID + " = ?"
                 + " AND " + CreateDatabase.COLUMN_INGREDIENT_SUPPLIER_SUPPLIER_ID + " = ?";
-        // Sử dụng Log.d để ghi log
-        Log.d("QuanLyGiaoDichDBO", "Query: " + query);
-        Log.d("QuanLyGiaoDichDBO", "Params: ingredientId = " + ingredientId + ", supplierId = ");
+
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(ingredientId), String.valueOf(supplierId)});
         if (cursor != null) {
             if (cursor.moveToFirst()) {

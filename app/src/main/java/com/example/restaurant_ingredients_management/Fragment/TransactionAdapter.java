@@ -19,6 +19,8 @@ import com.example.restaurant_ingredients_management.Database.QuanLyNhaCungCap_N
 import com.example.restaurant_ingredients_management.Database.QuanLyNguyenLieuDBO;
 import com.example.restaurant_ingredients_management.Controller.QuanLyNhaCC_NguyenLieuController;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,7 @@ private Context context;
 private QuanLyNhaCC_NguyenLieuController ingredientSupplierController;
     private ArrayList<Transaction> transactions;
     private List<Ingredient> ingredients;
-    private Double tongTien;
+    private Double tongTien = 0.0;
     private QuanLyGiaoDIchController qlgd;
 
     public TransactionAdapter(Context context, ArrayList<Transaction> transactions, List<Ingredient> ingredients) {
@@ -48,6 +50,7 @@ private QuanLyNhaCC_NguyenLieuController ingredientSupplierController;
         // Lấy đối tượng giao dịch và nguyên liệu tại vị trí hiện tại
         Transaction transaction = transactions.get(position);
         Ingredient ingredient = findIngredientById(transaction.getIngredientId());
+
         // Kiểm tra giá trị của ingredientId và supplierId
         Log.d("TransactionAdapter", "ingredientId: " + transaction.getIngredientId() + ", supplierId: " + transaction.getSupplierId());
 
@@ -62,7 +65,18 @@ private QuanLyNhaCC_NguyenLieuController ingredientSupplierController;
         TextView tvNote = convertView.findViewById(R.id.txtNote);
         TextView tvDate = convertView.findViewById(R.id.txtDate);
 
-        tongTien = qlgd.layGiaCaNguyenLieu(transaction.getSupplierId(),transaction.getIngredientId())*transaction.getQuantity();
+        Double giaTienMotDonVi = qlgd.layGiaCaNguyenLieu(transaction.getIngredientId(),transaction.getSupplierId());
+        try{
+            if(ingredient.getUnit().equalsIgnoreCase("Gram") && transaction.getUnit().equalsIgnoreCase("Kilogram")){
+                tongTien = giaTienMotDonVi*(transaction.getQuantity()*1000);
+            }
+            else{
+                tongTien = giaTienMotDonVi * transaction.getQuantity();
+            }
+        }catch (NullPointerException e){
+            tongTien = giaTienMotDonVi * transaction.getQuantity();
+        }
+        BigDecimal tongTienRounded = new BigDecimal(tongTien).setScale(2, RoundingMode.HALF_UP);
         // Hiển thị dữ liệu vào các TextView
         String TransName = ingredient != null ? ingredient.getName() : "Không xác định";
         String note = transaction.getNote().isEmpty()? "không có ghi chú" : transaction.getNote();
@@ -73,7 +87,7 @@ private QuanLyNhaCC_NguyenLieuController ingredientSupplierController;
             Unit = "Lít";
         }
         tvIngredientName.setText(TransName);
-        tvTotalPrice.setText(String.valueOf(tongTien));
+        tvTotalPrice.setText(String.valueOf(tongTienRounded));
         tvTransactionType.setText("Đã "+transaction.getTransactionType() + " ");
         tvQuantity.setText(String.valueOf(transaction.getQuantity()) + " ");
         tvUnit.setText(Unit + " "+TransName);
